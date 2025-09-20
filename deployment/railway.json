@@ -1,0 +1,28 @@
+{
+  "build": {
+    "builder": "DOCKERFILE"
+  },
+  "deploy": {
+    "startCommand": "python bot/bot.py",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 30,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5
+  },
+  "environments": {
+    "production": {
+      "variables": {
+        "BOT_TOKEN": "${{BOT_TOKEN}}",
+        "ADMIN_CHAT_ID": "${{ADMIN_CHAT_ID}}",
+        "CHANNEL_USERNAME": "${{CHANNEL_USERNAME}}",
+        "FLASK_SECRET_KEY": "${{FLASK_SECRET_KEY}}",
+        "FLASK_ENV": "production",
+        "BUSINESS_NAME": "${{BUSINESS_NAME}}",
+        "BUSINESS_EMAIL": "${{BUSINESS_EMAIL}}",
+        "BUSINESS_PHONE": "${{BUSINESS_PHONE}}",
+        "BUSINESS_ADDRESS": "${{BUSINESS_ADDRESS}}",
+        "DATABASE_URL": "sqlite:///database/printing_business.db"
+      }
+    }
+  }
+}

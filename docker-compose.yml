@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # Telegram Bot Service
+  printing-bot:
+    build: .
+    container_name: printing-business-bot
+    restart: unless-stopped
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - ADMIN_CHAT_ID=${ADMIN_CHAT_ID}
+      - CHANNEL_USERNAME=${CHANNEL_USERNAME}
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+      - FLASK_ENV=development
+      - BUSINESS_NAME=${BUSINESS_NAME:-Printing Business}
+      - BUSINESS_EMAIL=${BUSINESS_EMAIL:-contact@printingbusiness.com}
+      - BUSINESS_PHONE=${BUSINESS_PHONE:-+1234567890}
+      - BUSINESS_ADDRESS=${BUSINESS_ADDRESS:-Business Address}
+      - DATABASE_URL=sqlite:///database/printing_business.db
+    volumes:
+      - ./database:/app/database
+      - ./logs:/app/logs
+    command: python bot/bot.py
+    depends_on:
+      - printing-website
+    networks:
+      - printing-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Website Service
+  printing-website:
+    build: .
+    container_name: printing-business-website
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - ADMIN_CHAT_ID=${ADMIN_CHAT_ID}
+      - CHANNEL_USERNAME=${CHANNEL_USERNAME}
+      - FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
+      - FLASK_ENV=development
+      - FLASK_DEBUG=True
+      - BUSINESS_NAME=${BUSINESS_NAME:-Printing Business}
+      - BUSINESS_EMAIL=${BUSINESS_EMAIL:-contact@printingbusiness.com}
+      - BUSINESS_PHONE=${BUSINESS_PHONE:-+1234567890}
+      - BUSINESS_ADDRESS=${BUSINESS_ADDRESS:-Business Address}
+      - DATABASE_URL=sqlite:///database/printing_business.db
+      - PORT=5000
+    volumes:
+      - ./database:/app/database
+      - ./website/static/uploads:/app/website/static/uploads
+      - ./logs:/app/logs
+    command: python website/app.py
+    networks:
+      - printing-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  printing-network:
+    driver: bridge
+
+volumes:
+  database_data:
+    driver: local
+  upload_data:
+    driver: local

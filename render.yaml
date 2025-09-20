@@ -1,0 +1,74 @@
+services:
+  # Telegram Bot Service
+  - type: web
+    name: printing-business-bot
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r requirements.txt && python database/init_db.py
+    startCommand: python bot/bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_CHAT_ID
+        sync: false
+      - key: CHANNEL_USERNAME
+        sync: false
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: BUSINESS_NAME
+        value: "Printing Business"
+      - key: BUSINESS_EMAIL
+        value: "contact@printingbusiness.com"
+      - key: BUSINESS_PHONE
+        value: "+1234567890"
+      - key: BUSINESS_ADDRESS
+        value: "Business Address"
+      - key: DATABASE_URL
+        value: "sqlite:///database/printing_business.db"
+    
+    # Health checks
+    healthCheckPath: /health
+    
+    # Auto-deploy
+    autoDeploy: true
+
+  # Website Service (Optional - can be deployed separately)
+  - type: web
+    name: printing-business-website
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r requirements.txt && python database/init_db.py
+    startCommand: python website/app.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_CHAT_ID
+        sync: false
+      - key: CHANNEL_USERNAME
+        sync: false
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: BUSINESS_NAME
+        value: "Printing Business"
+      - key: BUSINESS_EMAIL
+        value: "contact@printingbusiness.com"
+      - key: BUSINESS_PHONE
+        value: "+1234567890"
+      - key: BUSINESS_ADDRESS
+        value: "Business Address"
+      - key: DATABASE_URL
+        value: "sqlite:///database/printing_business.db"
+      - key: PORT
+        value: "10000"
+    
+    # Health checks
+    healthCheckPath: /
+    
+    # Auto-deploy
+    autoDeploy: true
