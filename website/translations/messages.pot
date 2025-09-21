@@ -1,0 +1,131 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-09-21 13:47:00+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Home"
+msgstr ""
+
+msgid "Services"
+msgstr ""
+
+msgid "Order"
+msgstr ""
+
+msgid "Schedule"
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Channel"
+msgstr ""
+
+msgid "Professional Printing Services"
+msgstr ""
+
+msgid "Quality printing solutions for your business needs"
+msgstr ""
+
+msgid "From business cards to large format printing, we deliver exceptional quality and fast turnaround times."
+msgstr ""
+
+msgid "Why Choose Us?"
+msgstr ""
+
+msgid "We deliver excellence in every print job"
+msgstr ""
+
+msgid "Quality Printing"
+msgstr ""
+
+msgid "State-of-the-art equipment for professional results"
+msgstr ""
+
+msgid "Fast Turnaround"
+msgstr ""
+
+msgid "Quick delivery without compromising on quality"
+msgstr ""
+
+msgid "Competitive Pricing"
+msgstr ""
+
+msgid "Affordable rates for all printing services"
+msgstr ""
+
+msgid "Custom Design"
+msgstr ""
+
+msgid "Professional design services available"
+msgstr ""
+
+msgid "Our Services"
+msgstr ""
+
+msgid "We offer a wide range of printing services to meet all your business needs."
+msgstr ""
+
+msgid "View All Services"
+msgstr ""
+
+msgid "Ready to Get Started?"
+msgstr ""
+
+msgid "Get your printing project started today with our professional services."
+msgstr ""
+
+msgid "Order Now"
+msgstr ""
+
+msgid "Contact Us"
+msgstr ""
+
+msgid "Order via Telegram Bot"
+msgstr ""
+
+msgid "You can also place orders, schedule consultations, and message us directly through our Telegram bot for a convenient mobile experience."
+msgstr ""
+
+msgid "Quick order placement"
+msgstr ""
+
+msgid "Easy consultation scheduling"
+msgstr ""
+
+msgid "Direct messaging support"
+msgstr ""
+
+msgid "Real-time notifications"
+msgstr ""
+
+msgid "Search for our bot on Telegram:"
+msgstr ""
+
+msgid "Start Bot"
+msgstr ""
+
+msgid "Stay Updated!"
+msgstr ""
+
+msgid "Join our Telegram channel for the latest updates, promotions, and printing tips."
+msgstr ""
+
+msgid "Place Order"
+msgstr ""
+
+msgid "Schedule Consultation"
+msgstr ""

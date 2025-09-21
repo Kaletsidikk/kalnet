@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#ffffff"/>
+  
+  <!-- Sheet of stickers/labels -->
+  <g transform="translate(200, 80)">
+    <!-- Background sheet -->
+    <rect x="0" y="0" width="400" height="440" rx="12" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+    
+    <!-- Grid of stickers -->
+    <!-- Row 1 -->
+    <circle cx="100" cy="80" r="35" fill="#0d6efd" stroke="#ffffff" stroke-width="3"/>
+    <rect x="180" y="45" width="70" height="70" rx="8" fill="#28a745" stroke="#ffffff" stroke-width="3"/>
+    <polygon points="270,45 335,80 270,115" fill="#dc3545" stroke="#ffffff" stroke-width="3"/>
+    
+    <!-- Row 2 -->
+    <rect x="65" y="150" width="70" height="40" rx="20" fill="#fd7e14" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="215" cy="170" r="25" fill="#6f42c1" stroke="#ffffff" stroke-width="3"/>
+    <rect x="270" y="150" width="50" height="40" rx="6" fill="#20c997" stroke="#ffffff" stroke-width="3"/>
+    
+    <!-- Row 3 -->
+    <polygon points="65,220 100,200 135,220 135,260 100,280 65,260" fill="#ffc107" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="215" cy="240" r="30" fill="#e83e8c" stroke="#ffffff" stroke-width="3"/>
+    <rect x="270" y="210" width="60" height="60" rx="30" fill="#6c757d" stroke="#ffffff" stroke-width="3"/>
+    
+    <!-- Row 4 -->
+    <rect x="65" y="300" width="70" height="50" rx="10" fill="#17a2b8" stroke="#ffffff" stroke-width="3"/>
+    <polygon points="180,300 220,315 220,335 180,350 180,325" fill="#28a745" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="302" cy="325" r="25" fill="#fd7e14" stroke="#ffffff" stroke-width="3"/>
+    
+    <!-- Row 5 -->
+    <circle cx="100" cy="390" r="20" fill="#dc3545" stroke="#ffffff" stroke-width="3"/>
+    <rect x="140" y="370" width="40" height="40" rx="4" fill="#0d6efd" stroke="#ffffff" stroke-width="3"/>
+    <polygon points="200,370 230,385 215,410 185,410" fill="#6f42c1" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="285" cy="390" r="22" fill="#20c997" stroke="#ffffff" stroke-width="3"/>
+    <rect x="320" y="375" width="30" height="30" rx="6" fill="#ffc107" stroke="#ffffff" stroke-width="3"/>
+  </g>
+  
+  <text x="400" y="550" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="32" fill="#495057" font-weight="600">Stickers & Labels</text>
+  <text x="400" y="580" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="18" fill="#6c757d">Custom branding</text>
+</svg>

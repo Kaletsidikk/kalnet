@@ -1,0 +1,132 @@
+# English translations for Printing Business Platform.
+# Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# TRANSLATOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-09-21 13:47+0300\n"
+"PO-Revision-Date: 2025-09-21 13:51+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Services"
+msgstr "Services"
+
+msgid "Order"
+msgstr "Order"
+
+msgid "Schedule"
+msgstr "Schedule"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Channel"
+msgstr "Channel"
+
+msgid "Professional Printing Services"
+msgstr "Professional Printing Services"
+
+msgid "Quality printing solutions for your business needs"
+msgstr "Quality printing solutions for your business needs"
+
+msgid "From business cards to large format printing, we deliver exceptional quality and fast turnaround times."
+msgstr "From business cards to large format printing, we deliver exceptional quality and fast turnaround times."
+
+msgid "Why Choose Us?"
+msgstr "Why Choose Us?"
+
+msgid "We deliver excellence in every print job"
+msgstr "We deliver excellence in every print job"
+
+msgid "Quality Printing"
+msgstr "Quality Printing"
+
+msgid "State-of-the-art equipment for professional results"
+msgstr "State-of-the-art equipment for professional results"
+
+msgid "Fast Turnaround"
+msgstr "Fast Turnaround"
+
+msgid "Quick delivery without compromising on quality"
+msgstr "Quick delivery without compromising on quality"
+
+msgid "Competitive Pricing"
+msgstr "Competitive Pricing"
+
+msgid "Affordable rates for all printing services"
+msgstr "Affordable rates for all printing services"
+
+msgid "Custom Design"
+msgstr "Custom Design"
+
+msgid "Professional design services available"
+msgstr "Professional design services available"
+
+msgid "Our Services"
+msgstr "Our Services"
+
+msgid "We offer a wide range of printing services to meet all your business needs."
+msgstr "We offer a wide range of printing services to meet all your business needs."
+
+msgid "View All Services"
+msgstr "View All Services"
+
+msgid "Ready to Get Started?"
+msgstr "Ready to Get Started?"
+
+msgid "Get your printing project started today with our professional services."
+msgstr "Get your printing project started today with our professional services."
+
+msgid "Order Now"
+msgstr "Order Now"
+
+msgid "Contact Us"
+msgstr "Contact Us"
+
+msgid "Order via Telegram Bot"
+msgstr "Order via Telegram Bot"
+
+msgid "You can also place orders, schedule consultations, and message us directly through our Telegram bot for a convenient mobile experience."
+msgstr "You can also place orders, schedule consultations, and message us directly through our Telegram bot for a convenient mobile experience."
+
+msgid "Quick order placement"
+msgstr "Quick order placement"
+
+msgid "Easy consultation scheduling"
+msgstr "Easy consultation scheduling"
+
+msgid "Direct messaging support"
+msgstr "Direct messaging support"
+
+msgid "Real-time notifications"
+msgstr "Real-time notifications"
+
+msgid "Search for our bot on Telegram:"
+msgstr "Search for our bot on Telegram:"
+
+msgid "Start Bot"
+msgstr "Start Bot"
+
+msgid "Stay Updated!"
+msgstr "Stay Updated!"
+
+msgid "Join our Telegram channel for the latest updates, promotions, and printing tips."
+msgstr "Join our Telegram channel for the latest updates, promotions, and printing tips."
+
+msgid "Place Order"
+msgstr "Place Order"
+
+msgid "Schedule Consultation"
+msgstr "Schedule Consultation"

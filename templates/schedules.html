@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedules - KalNetworks Admin</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f6fa; }
+        .header { background: #667eea; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .nav { display: flex; gap: 2rem; }
+        .nav a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s; }
+        .nav a:hover { background: rgba(255,255,255,0.1); }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .schedule-card { background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .schedule-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .customer-info { font-weight: 600; color: #333; }
+        .schedule-date { color: #667eea; font-weight: 500; }
+        .contact-info { color: #666; font-size: 0.9rem; }
+        .btn { padding: 0.5rem 1rem; background: #667eea; color: white; text-decoration: none; border-radius: 5px; display: inline-block; transition: background 0.3s; }
+        .btn:hover { background: #5a6fd8; }
+        .flash { padding: 1rem; margin-bottom: 1rem; border-radius: 5px; }
+        .flash.success { background: #d4edda; color: #155724; }
+        .flash.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🖨️ KalNetworks Admin</h1>
+        <div class="nav">
+            <a href="/">Dashboard</a>
+            <a href="/services">Services</a>
+            <a href="/orders">Orders</a>
+            <a href="/messages">Messages</a>
+            <a href="/schedules">Schedules</a>
+            <a href="/settings">Settings</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Consultation Schedules</h2>
+            <span style="color: #666;">Pending Schedules: {{ schedules|length }}</span>
+        </div>
+
+        {% if schedules %}
+            {% for schedule in schedules %}
+            <div class="schedule-card">
+                <div class="schedule-header">
+                    <div>
+                        <div class="customer-info">📅 {{ schedule.customer_name }}</div>
+                        <div class="contact-info">📞 {{ schedule.contact_info }}</div>
+                    </div>
+                    <div class="schedule-date">{{ schedule.preferred_datetime }}</div>
+                </div>
+                
+                {% if schedule.notes %}
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin: 1rem 0;">
+                    <strong>Notes:</strong> {{ schedule.notes }}
+                </div>
+                {% endif %}
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.9rem; color: #666;">
+                        {% if schedule.telegram_user_id %}
+                            📱 From Telegram Bot
+                        {% else %}
+                            🌐 From Website
+                        {% endif %}
+                        • Created: {{ schedule.created_at[:16] }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align: center; padding: 3rem; background: white; border-radius: 8px;">
+                <h3 style="color: #666; margin-bottom: 1rem;">📅 No Schedules Yet</h3>
+                <p style="color: #999;">Consultation requests from the website and bot will appear here.</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

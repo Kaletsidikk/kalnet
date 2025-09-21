@@ -19,13 +19,13 @@ services:
       - key: FLASK_ENV
         value: production
       - key: BUSINESS_NAME
-        value: "Printing Business"
+        value: "kalnetworks"
       - key: BUSINESS_EMAIL
-        value: "contact@printingbusiness.com"
+        value: "gebeyatechnologies.com"
       - key: BUSINESS_PHONE
-        value: "+1234567890"
+        value: "+251965552595"
       - key: BUSINESS_ADDRESS
-        value: "Business Address"
+        value: "Addis Ababa, Ethiopia"
       - key: DATABASE_URL
         value: "sqlite:///database/printing_business.db"
     

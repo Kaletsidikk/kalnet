@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule Consultation - {{ business_name }}{% endblock %}
+
+{% block content %}
+<!-- Schedule Header -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-calendar me-3"></i>Schedule a Consultation
+                </h1>
+                <p class="lead mb-0">Book a consultation to discuss your printing needs and get expert advice.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Schedule Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Consultation Details</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="scheduleForm">
+                            <!-- Customer Information -->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <h5 class="text-primary mb-3"><i class="fas fa-user me-2"></i>Your Information</h5>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="contact" class="form-label">Contact Information <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="contact" name="contact" 
+                                       placeholder="Phone number or email address" required>
+                                <div class="form-text">We'll use this to confirm your consultation appointment</div>
+                            </div>
+                            
+                            <!-- Schedule Information -->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <h5 class="text-primary mb-3"><i class="fas fa-clock me-2"></i>Preferred Time</h5>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="preferred_datetime" class="form-label">Preferred Date & Time <span class="text-danger">*</span></label>
+                                <input type="datetime-local" class="form-control" id="preferred_datetime" name="preferred_datetime" required>
+                                <div class="form-text">Please select your preferred date and time. We'll confirm availability.</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="notes" class="form-label">What would you like to discuss?</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="4" 
+                                          placeholder="Tell us about your project, questions you have, or specific printing needs you'd like to discuss..."></textarea>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                    <i class="fas fa-calendar-check me-2"></i>Schedule Consultation
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Consultation Info -->
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>About Our Consultations</h6>
+                            <ul class="mb-0">
+                                <li>Consultations are typically 30-60 minutes long</li>
+                                <li>Available Monday-Friday, 9 AM to 6 PM</li>
+                                <li>We can meet in person, over the phone, or via video call</li>
+                                <li>Free consultation for all potential projects</li>
+                                <li>We'll discuss your needs, timeline, and provide pricing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h3 class="fw-bold">Why Schedule a Consultation?</h3>
+                <p class="text-muted">Get personalized advice for your printing project</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 text-center">
+                <div class="benefit-icon mb-3">
+                    <i class="fas fa-lightbulb display-4 text-primary"></i>
+                </div>
+                <h5 class="fw-bold">Expert Guidance</h5>
+                <p class="text-muted">Get professional advice on materials, techniques, and design options for your project.</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="benefit-icon mb-3">
+                    <i class="fas fa-calculator display-4 text-primary"></i>
+                </div>
+                <h5 class="fw-bold">Accurate Pricing</h5>
+                <p class="text-muted">Receive detailed quotes and understand the costs involved in your printing project.</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="benefit-icon mb-3">
+                    <i class="fas fa-clock display-4 text-primary"></i>
+                </div>
+                <h5 class="fw-bold">Timeline Planning</h5>
+                <p class="text-muted">Plan your project timeline and ensure delivery meets your deadlines.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h4 class="fw-bold mb-3">Prefer to Call?</h4>
+                <p class="text-muted mb-3">You can also reach us directly to schedule your consultation</p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+                    <a href="tel:{{ business_phone }}" class="btn btn-outline-primary">
+                        <i class="fas fa-phone me-2"></i>{{ business_phone }}
+                    </a>
+                    <a href="mailto:{{ business_email }}" class="btn btn-outline-primary">
+                        <i class="fas fa-envelope me-2"></i>{{ business_email }}
+                    </a>
+                    <a href="{{ url_for('contact_form') }}" class="btn btn-primary">
+                        <i class="fas fa-comment me-2"></i>Send Message
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    }
+    
+    .benefit-icon i {
+        opacity: 0.8;
+    }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('scheduleForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.innerHTML;
+    
+    // Show loading state
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Scheduling...';
+    submitBtn.disabled = true;
+    
+    try {
+        // Get form data
+        const formData = new FormData(this);
+        const scheduleData = {
+            name: formData.get('name'),
+            contact: formData.get('contact'),
+            preferred_datetime: formData.get('preferred_datetime'),
+            notes: formData.get('notes')
+        };
+        
+        // Submit schedule request
+        const response = await fetch('/api/schedule', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(scheduleData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Consultation Requested!</strong> ${result.message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Insert alert at the top of the form
+            const cardBody = document.querySelector('.card-body');
+            cardBody.insertBefore(alertDiv, cardBody.firstChild);
+            
+            // Reset form
+            this.reset();
+            
+            // Scroll to top of form
+            alertDiv.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            throw new Error(result.error || 'Failed to schedule consultation');
+        }
+        
+    } catch (error) {
+        // Show error message
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+        alertDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Error!</strong> ${error.message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Insert alert at the top of the form
+        const cardBody = document.querySelector('.card-body');
+        cardBody.insertBefore(alertDiv, cardBody.firstChild);
+        
+        // Scroll to top of form
+        alertDiv.scrollIntoView({ behavior: 'smooth' });
+    } finally {
+        // Restore button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Set minimum datetime to current time
+document.addEventListener('DOMContentLoaded', function() {
+    const datetimeInput = document.getElementById('preferred_datetime');
+    const now = new Date();
+    // Add 1 hour to current time as minimum
+    now.setHours(now.getHours() + 1);
+    
+    // Format to datetime-local format
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    datetimeInput.min = `${year}-${month}-${day}T${hours}:${minutes}`;
+});
+</script>
+{% endblock %}

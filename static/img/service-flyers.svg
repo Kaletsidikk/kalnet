@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#ffffff"/>
+  
+  <!-- Multiple flyer sheets -->
+  <g transform="translate(150, 80)">
+    <!-- Sheet 3 (back) -->
+    <rect x="30" y="30" width="300" height="400" rx="8" fill="#e9ecef" stroke="#ced4da" stroke-width="2"/>
+    
+    <!-- Sheet 2 (middle) -->
+    <rect x="15" y="15" width="300" height="400" rx="8" fill="#f1f3f4" stroke="#ced4da" stroke-width="2"/>
+    
+    <!-- Sheet 1 (front) -->
+    <rect x="0" y="0" width="300" height="400" rx="8" fill="#ffffff" stroke="#adb5bd" stroke-width="2"/>
+    
+    <!-- Content on front sheet -->
+    <!-- Header -->
+    <rect x="20" y="20" width="260" height="80" rx="6" fill="#0d6efd"/>
+    <rect x="40" y="40" width="120" height="16" rx="4" fill="#ffffff"/>
+    <rect x="40" y="65" width="180" height="12" rx="3" fill="#e6f0ff"/>
+    
+    <!-- Body content -->
+    <rect x="20" y="120" width="260" height="12" rx="3" fill="#495057"/>
+    <rect x="20" y="140" width="200" height="10" rx="2" fill="#6c757d"/>
+    <rect x="20" y="160" width="240" height="10" rx="2" fill="#6c757d"/>
+    <rect x="20" y="180" width="180" height="10" rx="2" fill="#6c757d"/>
+    
+    <!-- Image placeholder -->
+    <rect x="20" y="210" width="120" height="80" rx="4" fill="#e9ecef"/>
+    <rect x="160" y="210" width="120" height="24" rx="3" fill="#495057"/>
+    <rect x="160" y="245" width="100" height="10" rx="2" fill="#6c757d"/>
+    <rect x="160" y="265" width="110" height="10" rx="2" fill="#6c757d"/>
+    
+    <!-- Footer -->
+    <rect x="20" y="320" width="260" height="60" rx="4" fill="#f8f9fa"/>
+    <rect x="40" y="340" width="80" height="8" rx="2" fill="#6c757d"/>
+    <rect x="140" y="340" width="100" height="8" rx="2" fill="#6c757d"/>
+  </g>
+  
+  <text x="400" y="520" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="32" fill="#495057" font-weight="600">Flyers & Brochures</text>
+  <text x="400" y="560" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="18" fill="#6c757d">Marketing materials</text>
+</svg>

@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block title %}Place Order - {{ business_name }}{% endblock %}
+
+{% block content %}
+<!-- Order Header -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-shopping-cart me-3"></i>Place Your Order
+                </h1>
+                <p class="lead mb-0">Fill out the form below to submit your printing order. We'll get back to you quickly!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Order Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Order Details</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="orderForm">
+                            <!-- Customer Information -->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <h5 class="text-primary mb-3"><i class="fas fa-user me-2"></i>Customer Information</h5>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="company" class="form-label">Company Name</label>
+                                    <input type="text" class="form-control" id="company" name="company">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="contact" class="form-label">Contact Information <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="contact" name="contact" 
+                                       placeholder="Phone number or email address" required>
+                                <div class="form-text">Please provide either your phone number or email address</div>
+                            </div>
+                            
+                            <!-- Order Information -->
+                            <div class="row mb-4 mt-4">
+                                <div class="col">
+                                    <h5 class="text-primary mb-3"><i class="fas fa-print me-2"></i>Order Information</h5>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="product_type" class="form-label">Service/Product <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="product_type" name="product_type" required>
+                                        <option value="">Select a service...</option>
+                                        {% for service in services %}
+                                        <option value="{{ service.name }}">{{ service.name }}</option>
+                                        {% endfor %}
+                                        <option value="Other">Other (specify in notes)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="delivery_date" class="form-label">Preferred Delivery Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="delivery_date" name="delivery_date" required>
+                                <div class="form-text">Please allow adequate time for processing your order</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="notes" class="form-label">Additional Notes</label>
+                                <textarea class="form-control" id="notes" name="notes" rows="4" 
+                                          placeholder="Please provide any additional details about your order, specifications, colors, sizes, etc."></textarea>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Order
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Order Info -->
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>What happens next?</h6>
+                            <ul class="mb-0">
+                                <li>We'll review your order and contact you within 24 hours</li>
+                                <li>We'll provide a detailed quote and timeline</li>
+                                <li>Once approved, we'll begin production</li>
+                                <li>We'll notify you when your order is ready</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col">
+                <h4 class="fw-bold mb-3">Need Help?</h4>
+                <p class="text-muted mb-3">Contact us directly if you have questions about your order</p>
+                <div class="d-flex flex-wrap gap-3 justify-content-center">
+                    <a href="tel:{{ business_phone }}" class="btn btn-outline-primary">
+                        <i class="fas fa-phone me-2"></i>{{ business_phone }}
+                    </a>
+                    <a href="mailto:{{ business_email }}" class="btn btn-outline-primary">
+                        <i class="fas fa-envelope me-2"></i>{{ business_email }}
+                    </a>
+                    <a href="{{ url_for('contact_form') }}" class="btn btn-primary">
+                        <i class="fas fa-comment me-2"></i>Send Message
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.innerHTML;
+    
+    // Show loading state
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+    submitBtn.disabled = true;
+    
+    try {
+        // Get form data
+        const formData = new FormData(this);
+        const orderData = {
+            name: formData.get('name'),
+            company: formData.get('company'),
+            contact: formData.get('contact'),
+            product_type: formData.get('product_type'),
+            quantity: parseInt(formData.get('quantity')),
+            delivery_date: formData.get('delivery_date'),
+            notes: formData.get('notes')
+        };
+        
+        // Submit order
+        const response = await fetch('/api/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Order Submitted!</strong> ${result.message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // Insert alert at the top of the form
+            const cardBody = document.querySelector('.card-body');
+            cardBody.insertBefore(alertDiv, cardBody.firstChild);
+            
+            // Reset form
+            this.reset();
+            
+            // Scroll to top of form
+            alertDiv.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            throw new Error(result.error || 'Failed to submit order');
+        }
+        
+    } catch (error) {
+        // Show error message
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+        alertDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <strong>Error!</strong> ${error.message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        // Insert alert at the top of the form
+        const cardBody = document.querySelector('.card-body');
+        cardBody.insertBefore(alertDiv, cardBody.firstChild);
+        
+        // Scroll to top of form
+        alertDiv.scrollIntoView({ behavior: 'smooth' });
+    } finally {
+        // Restore button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+// Set minimum date to tomorrow
+document.addEventListener('DOMContentLoaded', function() {
+    const deliveryDateInput = document.getElementById('delivery_date');
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    deliveryDateInput.min = tomorrow.toISOString().split('T')[0];
+});
+</script>
+{% endblock %}

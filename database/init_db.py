@@ -87,13 +87,13 @@ def create_database():
         )
     ''')
     
-    # Insert default services
+    # Insert default services (prices in Ethiopian Birr - ETB)
     default_services = [
-        ('Business Cards', 'Professional business cards with various finishes', '$50-200 per 1000'),
-        ('Flyers/Brochures', 'Marketing materials for promotions and information', '$100-500'),
-        ('Banners/Posters', 'Large format printing for events and advertising', '$200-1000'),
-        ('Booklets/Catalogs', 'Multi-page printed materials with binding options', '$300-1500'),
-        ('Stickers/Labels', 'Custom stickers and labels for branding', '$100-400'),
+        ('Business Cards', 'Professional business cards with various finishes', '2,500-10,000 ETB per 1000'),
+        ('Flyers/Brochures', 'Marketing materials for promotions and information', '5,000-25,000 ETB'),
+        ('Banners/Posters', 'Large format printing for events and advertising', '10,000-50,000 ETB'),
+        ('Booklets/Catalogs', 'Multi-page printed materials with binding options', '15,000-75,000 ETB'),
+        ('Stickers/Labels', 'Custom stickers and labels for branding', '5,000-20,000 ETB'),
         ('Custom Printing', 'Specialized printing services tailored to your needs', 'Quote on request')
     ]
     
@@ -106,20 +106,20 @@ def create_database():
     conn.commit()
     conn.close()
     
-    print("✅ Database created successfully!")
-    print("📊 Tables created:")
+    print("[SUCCESS] Database created successfully!")
+    print("[INFO] Tables created:")
     print("  - orders")
     print("  - schedules") 
     print("  - messages")
     print("  - users")
     print("  - services")
-    print("🔧 Default services added")
+    print("[INFO] Default services added")
 
 def reset_database():
     """Reset the database by dropping all tables and recreating them"""
     if os.path.exists('database/printing_business.db'):
         os.remove('database/printing_business.db')
-        print("🗑️ Existing database removed")
+        print("[INFO] Existing database removed")
     
     create_database()
 

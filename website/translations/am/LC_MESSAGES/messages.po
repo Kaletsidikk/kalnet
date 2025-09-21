@@ -1,0 +1,132 @@
+# Amharic translations for Printing Business Platform.
+# Copyright (C) 2025 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# TRANSLATOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-09-21 13:47+0300\n"
+"PO-Revision-Date: 2025-09-21 13:49+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: am\n"
+"Language-Team: am <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Home"
+msgstr "ቤት"
+
+msgid "Services"
+msgstr "አገልግሎቶች"
+
+msgid "Order"
+msgstr "ትዕዛዝ"
+
+msgid "Schedule"
+msgstr "ፕሮግራም"
+
+msgid "Contact"
+msgstr "ግንኙነት"
+
+msgid "Channel"
+msgstr "ቻናል"
+
+msgid "Professional Printing Services"
+msgstr "ፕሮፌሽናል የህትመት አገልግሎቶች"
+
+msgid "Quality printing solutions for your business needs"
+msgstr "ለንግድ ፍላጎትዎ የጥራት ህትመት መፍትሄዎች"
+
+msgid "From business cards to large format printing, we deliver exceptional quality and fast turnaround times."
+msgstr "ከንግድ ካርዶች እስከ ትላቅ ፎርማት ህትመት፣ እጅግ የላቀ ጥራትና ፈጣን አገልግሎት እንሰጣለን።"
+
+msgid "Why Choose Us?"
+msgstr "ለምን እኛን መርጠው?"
+
+msgid "We deliver excellence in every print job"
+msgstr "በእያንዳንዱ የህትመት ሥራ ላይ ምርጥነትን እናቀርባለን"
+
+msgid "Quality Printing"
+msgstr "የጥራት ህትመት"
+
+msgid "State-of-the-art equipment for professional results"
+msgstr "ለፕሮፌሽናል ውጤት ዘመናዊ መሳሪያዎች"
+
+msgid "Fast Turnaround"
+msgstr "ፈጣን አገልግሎት"
+
+msgid "Quick delivery without compromising on quality"
+msgstr "ጥራትን ሳይጎዳ ፈጣን አቅርቦት"
+
+msgid "Competitive Pricing"
+msgstr "ተወዳዳሪ ዋጋ"
+
+msgid "Affordable rates for all printing services"
+msgstr "ለሁሉም የህትመት አገልግሎቶች ተመጣጣኝ ዋጋ"
+
+msgid "Custom Design"
+msgstr "ብጁ ዲዛይን"
+
+msgid "Professional design services available"
+msgstr "ፕሮፌሽናል የዲዛይን አገልግሎቶች አሉ"
+
+msgid "Our Services"
+msgstr "የእኛ አገልግሎቶች"
+
+msgid "We offer a wide range of printing services to meet all your business needs."
+msgstr "ሁሉንም የንግድ ፍላጎቶችዎን ለማሟላት ሰፊ የህትመት አገልግሎቶችን እናቀርባለን።"
+
+msgid "View All Services"
+msgstr "ሁሉንም አገልግሎቶች ይመልከቱ"
+
+msgid "Ready to Get Started?"
+msgstr "ለመጀመር ተዘጋጅተዋል?"
+
+msgid "Get your printing project started today with our professional services."
+msgstr "የህትመት ፕሮጀክትዎን ዛሬ በእኛ ፕሮፌሽናል አገልግሎት ይጀምሩ።"
+
+msgid "Order Now"
+msgstr "አሁን ይዘዙ"
+
+msgid "Contact Us"
+msgstr "ያግኙን"
+
+msgid "Order via Telegram Bot"
+msgstr "በቴሌግራም ቦት ይዘዙ"
+
+msgid "You can also place orders, schedule consultations, and message us directly through our Telegram bot for a convenient mobile experience."
+msgstr "እንዲሁም በቴሌግራም ቦታችን በኩል ትዕዛዞችን መስጠት፣ ምክክር መፈጸም እና በቀጥታ መልዕክት መላክ ይችላሉ።"
+
+msgid "Quick order placement"
+msgstr "ፈጣን የትዕዛዝ አቀራረብ"
+
+msgid "Easy consultation scheduling"
+msgstr "ቀላል የምክክር መርሐ ግብር"
+
+msgid "Direct messaging support"
+msgstr "የቀጥታ መልዕክት ድጋፍ"
+
+msgid "Real-time notifications"
+msgstr "በእውነተኛ ጊዜ ማሳወቂያዎች"
+
+msgid "Search for our bot on Telegram:"
+msgstr "በቴሌግራም ውስጥ የእኛን ቦት ይፈልጉ፡"
+
+msgid "Start Bot"
+msgstr "ቦት ይጀምሩ"
+
+msgid "Stay Updated!"
+msgstr "ወቅታዊ ይሁኑ!"
+
+msgid "Join our Telegram channel for the latest updates, promotions, and printing tips."
+msgstr "ለዘመናዊ መረጃዎች፣ ወቅታዊ ስጦታዎች እና የህትመት ምክሮች የቴሌግራም ቻናላችንን ይቀላቀሉ።"
+
+msgid "Place Order"
+msgstr "ትዕዛዝ ይስጡ"
+
+msgid "Schedule Consultation"
+msgstr "ምክክር ያዘጋጁ"

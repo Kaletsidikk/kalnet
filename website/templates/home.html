@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ content.hero_title }} - {{ business_name }}{% endblock %}
+{% block title %}{{ _('Professional Printing Services') }} - {{ business_name }}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -9,23 +9,26 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <h1 class="display-4 fw-bold mb-3">
-                    {{ content.hero_title }}
+                    {{ _('Professional Printing Services') }}
                 </h1>
                 <p class="lead mb-4">
-                    {{ content.hero_description }}
+                    {{ _('From business cards to large format printing, we deliver exceptional quality and fast turnaround times.') }}
                 </p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="{{ url_for('order_form') }}" class="btn btn-light btn-lg">
-                        <i class="fas fa-shopping-cart me-2"></i>Place Order
+                        <i class="fas fa-shopping-cart me-2"></i>{{ _('Place Order') }}
                     </a>
                     <a href="{{ url_for('schedule_form') }}" class="btn btn-outline-light btn-lg">
-                        <i class="fas fa-calendar me-2"></i>Schedule Consultation
+                        <i class="fas fa-calendar me-2"></i>{{ _('Schedule Consultation') }}
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6 text-center">
-                <div class="hero-icon">
-                    <i class="fas fa-print display-1"></i>
+            <div class="col-lg-6">
+                <div class="hero-image-container position-relative">
+                    <img src="{{ url_for('static', filename='img/hero-printing.png') }}" 
+                         alt="Professional Printing Services" 
+                         class="img-fluid rounded-4 shadow-lg hero-image">
+                    <div class="hero-image-overlay position-absolute top-0 start-0 w-100 h-100 rounded-4"></div>
                 </div>
             </div>
         </div>
@@ -37,23 +40,64 @@
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col">
-                <h2 class="fw-bold">Why Choose Us?</h2>
-                <p class="text-muted">We deliver excellence in every print job</p>
+                <h2 class="fw-bold">{{ _('Why Choose Us?') }}</h2>
+                <p class="text-muted">{{ _('We deliver excellence in every print job') }}</p>
             </div>
         </div>
         
         <div class="row g-4">
-            {% for feature in content.features %}
             <div class="col-lg-3 col-md-6">
-                <div class="feature-card h-100 p-4 text-center border rounded-3 shadow-sm">
-                    <div class="feature-icon mb-3">
-                        <span class="display-4">{{ feature.icon }}</span>
+                <div class="feature-card h-100 text-center border-0 rounded-4 shadow-sm overflow-hidden">
+                    <div class="feature-image-container position-relative">
+                        <div class="feature-icon-bg bg-primary bg-opacity-10 p-4 rounded-4 mb-3">
+                            <i class="fas fa-print text-primary" style="font-size: 3rem;"></i>
+                        </div>
                     </div>
-                    <h5 class="fw-bold">{{ feature.title }}</h5>
-                    <p class="text-muted mb-0">{{ feature.description }}</p>
+                    <div class="p-3">
+                        <h5 class="fw-bold mb-2">{{ _('Quality Printing') }}</h5>
+                        <p class="text-muted mb-0 small">{{ _('State-of-the-art equipment for professional results') }}</p>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card h-100 text-center border-0 rounded-4 shadow-sm overflow-hidden">
+                    <div class="feature-image-container position-relative">
+                        <div class="feature-icon-bg bg-success bg-opacity-10 p-4 rounded-4 mb-3">
+                            <i class="fas fa-bolt text-success" style="font-size: 3rem;"></i>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h5 class="fw-bold mb-2">{{ _('Fast Turnaround') }}</h5>
+                        <p class="text-muted mb-0 small">{{ _('Quick delivery without compromising on quality') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card h-100 text-center border-0 rounded-4 shadow-sm overflow-hidden">
+                    <div class="feature-image-container position-relative">
+                        <div class="feature-icon-bg bg-warning bg-opacity-10 p-4 rounded-4 mb-3">
+                            <i class="fas fa-coins text-warning" style="font-size: 3rem;"></i>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h5 class="fw-bold mb-2">{{ _('Competitive Pricing') }}</h5>
+                        <p class="text-muted mb-0 small">{{ _('Affordable rates for all printing services') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card h-100 text-center border-0 rounded-4 shadow-sm overflow-hidden">
+                    <div class="feature-image-container position-relative">
+                        <div class="feature-icon-bg bg-info bg-opacity-10 p-4 rounded-4 mb-3">
+                            <i class="fas fa-palette text-info" style="font-size: 3rem;"></i>
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h5 class="fw-bold mb-2">{{ _('Custom Design') }}</h5>
+                        <p class="text-muted mb-0 small">{{ _('Professional design services available') }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -63,22 +107,38 @@
     <div class="container">
         <div class="row text-center mb-5">
             <div class="col">
-                <h2 class="fw-bold">{{ content.services_title }}</h2>
-                <p class="text-muted">{{ content.services_description }}</p>
+                <h2 class="fw-bold">{{ _('Our Services') }}</h2>
+                <p class="text-muted">{{ _('We offer a wide range of printing services to meet all your business needs.') }}</p>
             </div>
         </div>
         
         <div class="row g-4">
+            {% set service_images = {
+            'Business Cards': 'service-business-cards.svg',
+            'Flyers/Brochures': 'service-flyers.jpg', 
+            'Banners/Posters': 'service-banners.jpeg',
+            'Booklets/Catalogs': 'catalogs.jpg',
+            'Stickers/Labels': 'service-stickers.webp',
+            'Custom Printing': 'service-custom.svg'
+            } %}
             {% for service in services[:6] %}
             <div class="col-lg-4 col-md-6">
-                <div class="service-card h-100 p-4 bg-white rounded-3 shadow-sm">
-                    <h5 class="fw-bold mb-3">
-                        <i class="fas fa-print text-primary me-2"></i>{{ service.name }}
-                    </h5>
-                    <p class="text-muted mb-3">{{ service.description }}</p>
-                    {% if service.price_range %}
-                    <p class="text-primary fw-bold mb-0">{{ service.price_range }}</p>
-                    {% endif %}
+                <div class="service-card h-100 bg-white rounded-4 shadow-sm border-0 overflow-hidden">
+                    <div class="service-image-container position-relative">
+                        {% set image_name = service_images.get(service.name, 'service-custom.svg') %}
+                        <img src="{{ url_for('static', filename='img/' + image_name) }}" 
+                             alt="{{ service.name }}" 
+                             class="img-fluid service-image" 
+                             style="height: 200px; width: 100%; object-fit: cover;">
+                        <div class="service-overlay position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25"></div>
+                    </div>
+                    <div class="p-4">
+                        <h5 class="fw-bold mb-3 text-dark">{{ service.name }}</h5>
+                        <p class="text-muted mb-3 small">{{ service.description }}</p>
+                        {% if service.price_range %}
+                        <p class="text-primary fw-bold mb-0 h6">{{ service.price_range }}</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -86,7 +146,7 @@
         
         <div class="text-center mt-5">
             <a href="{{ url_for('services') }}" class="btn btn-primary btn-lg">
-                <i class="fas fa-list me-2"></i>View All Services
+                <i class="fas fa-list me-2"></i>{{ _('View All Services') }}
             </a>
         </div>
     </div>
@@ -97,16 +157,16 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
-                <h3 class="fw-bold mb-2">Ready to Get Started?</h3>
-                <p class="mb-0">Get your printing project started today with our professional services.</p>
+                <h3 class="fw-bold mb-2">{{ _('Ready to Get Started?') }}</h3>
+                <p class="mb-0">{{ _('Get your printing project started today with our professional services.') }}</p>
             </div>
             <div class="col-lg-4 text-lg-end">
                 <div class="d-flex flex-column flex-sm-row gap-3 justify-content-lg-end">
                     <a href="{{ url_for('order_form') }}" class="btn btn-light">
-                        <i class="fas fa-shopping-cart me-2"></i>Order Now
+                        <i class="fas fa-shopping-cart me-2"></i>{{ _('Order Now') }}
                     </a>
                     <a href="{{ url_for('contact_form') }}" class="btn btn-outline-light">
-                        <i class="fas fa-envelope me-2"></i>Contact Us
+                        <i class="fas fa-envelope me-2"></i>{{ _('Contact Us') }}
                     </a>
                 </div>
             </div>
@@ -121,35 +181,41 @@
             <div class="col-lg-6 mb-4 mb-lg-0">
                 <h3 class="fw-bold mb-3">
                     <i class="fab fa-telegram text-primary me-2"></i>
-                    Order via Telegram Bot
+                    {{ _('Order via Telegram Bot') }}
                 </h3>
                 <p class="text-muted mb-4">
-                    You can also place orders, schedule consultations, and message us directly 
-                    through our Telegram bot for a convenient mobile experience.
+                    {{ _('You can also place orders, schedule consultations, and message us directly through our Telegram bot for a convenient mobile experience.') }}
                 </p>
                 <ul class="list-unstyled">
                     <li class="mb-2">
                         <i class="fas fa-check text-success me-2"></i>
-                        Quick order placement
+                        {{ _('Quick order placement') }}
                     </li>
                     <li class="mb-2">
                         <i class="fas fa-check text-success me-2"></i>
-                        Easy consultation scheduling
+                        {{ _('Easy consultation scheduling') }}
                     </li>
                     <li class="mb-2">
                         <i class="fas fa-check text-success me-2"></i>
-                        Direct messaging support
+                        {{ _('Direct messaging support') }}
                     </li>
                     <li class="mb-2">
                         <i class="fas fa-check text-success me-2"></i>
-                        Real-time notifications
+                        {{ _('Real-time notifications') }}
                     </li>
                 </ul>
                 <div class="mt-4">
                     <p class="mb-2">
-                        <strong>Search for our bot on Telegram:</strong>
+                        <strong>{{ _('Search for our bot on Telegram:') }}</strong>
                     </p>
-                    <code class="bg-light p-2 rounded">@YourPrintingBot</code>
+                    <code class="bg-light p-2 rounded">@kalnetworks_bot</code>
+                    <div class="mt-3">
+                        <a href="https://t.me/kalnetworks_bot?start=welcome" 
+                           target="_blank" 
+                           class="btn btn-primary btn-lg">
+                            <i class="fab fa-telegram me-2"></i>{{ _('Start Bot') }}
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6 text-center">
@@ -172,10 +238,10 @@
             <div class="col">
                 <h3 class="fw-bold mb-3">
                     <i class="fab fa-telegram text-primary me-2"></i>
-                    Stay Updated!
+                    {{ _('Stay Updated!') }}
                 </h3>
                 <p class="text-muted mb-4">
-                    Join our Telegram channel for the latest updates, promotions, and printing tips.
+                    {{ _('Join our Telegram channel for the latest updates, promotions, and printing tips.') }}
                 </p>
                 <a href="https://t.me/{{ channel_username.lstrip('@') }}" 
                    target="_blank" 
