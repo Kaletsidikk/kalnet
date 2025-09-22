@@ -23,9 +23,9 @@ logger = logging.getLogger(__name__)
 def main():
     """Main entry point for the bot"""
     try:
-        logger.info("🚀 Starting Telegram Bot...")
+        logger.info("🚀 Starting Enhanced Printing Bot...")
         
-        # Import and run the simple, compatible bot
+        # Import and run the enhanced bot
         from bot_simple import main as run_bot
         run_bot()
         
