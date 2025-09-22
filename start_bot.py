@@ -25,8 +25,8 @@ def main():
     try:
         logger.info("🚀 Starting Enhanced Printing Bot...")
         
-        # Import and run the enhanced bot
-        from bot_simple import main as run_bot
+        # Import and run the fixed enhanced bot
+        from test_bot_fixed import main as run_bot
         run_bot()
         
     except ImportError as e:

@@ -707,12 +707,10 @@ def main():
         logger.info(f"📱 Admin Chat ID: {bot.admin_chat_id}")
         logger.info("🔄 Starting polling...")
         
-        # Start the bot with enhanced settings
+        # Start the bot with compatible settings
         application.run_polling(
-            allowed_updates=Update.ALL_TYPES,
             drop_pending_updates=True,
-            poll_interval=1.0,
-            timeout=20
+            allowed_updates=Update.ALL_TYPES
         )
         
     except Exception as e:
