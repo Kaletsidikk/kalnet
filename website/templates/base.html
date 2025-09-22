@@ -23,7 +23,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold fs-4" href="{{ url_for('home') }}">
-                <i class="fas fa-print me-2 text-warning"></i>{{ business_name }}
+                kalnetworks
             </a>
             
             <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,33 +34,33 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item">
                         <a class="nav-link px-3 py-2 rounded-2" href="{{ url_for('home') }}">
-                            <i class="fas fa-home me-2"></i>{{ _('Home') }}
+                            {{ _('Home') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-3 py-2 rounded-2" href="{{ url_for('services') }}">
-                            <i class="fas fa-list me-2"></i>{{ _('Services') }}
+                            {{ _('Services') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-3 py-2 rounded-2" href="{{ url_for('order_form') }}">
-                            <i class="fas fa-shopping-cart me-2"></i>{{ _('Order') }}
+                            {{ _('Order') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-3 py-2 rounded-2" href="{{ url_for('schedule_form') }}">
-                            <i class="fas fa-calendar me-2"></i>{{ _('Schedule') }}
+                            {{ _('Schedule') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-3 py-2 rounded-2" href="{{ url_for('contact_form') }}">
-                            <i class="fas fa-envelope me-2"></i>{{ _('Contact') }}
+                            {{ _('Contact') }}
                         </a>
                     </li>
                     {% if channel_username %}
                     <li class="nav-item">
                         <a class="nav-link px-3 py-2 rounded-2" href="https://t.me/{{ channel_username.lstrip('@') }}" target="_blank">
-                            <i class="fab fa-telegram me-2"></i>{{ _('Channel') }}
+                            {{ _('Channel') }}
                         </a>
                     </li>
                     {% endif %}

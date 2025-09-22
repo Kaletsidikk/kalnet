@@ -779,11 +779,12 @@ def main():
         # Add error handler
         application.add_error_handler(bot.error_handler)
         
-        # Set bot commands
-        async def post_init(app):
-            await set_bot_commands(app)
-        
-        application.post_init = post_init
+        # Set bot commands in a simpler way
+        try:
+            import asyncio
+            asyncio.get_event_loop().run_until_complete(set_bot_commands(application))
+        except Exception as e:
+            logger.error(f"❌ Error setting bot commands: {e}")
         
         logger.info("✅ Bot configured successfully!")
         logger.info(f"🏪 Business: {BUSINESS_NAME}")
@@ -795,13 +796,7 @@ def main():
             allowed_updates=Update.ALL_TYPES,
             drop_pending_updates=True,
             poll_interval=1.0,
-            timeout=20,
-            # Add connection pool settings for better stability
-            pool_timeout=20,
-            connection_pool_size=8,
-            read_timeout=30,
-            write_timeout=30,
-            connect_timeout=30
+            timeout=20
         )
         
     except KeyboardInterrupt:
