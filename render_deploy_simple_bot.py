@@ -66,11 +66,15 @@ class SimpleBot:
         self.user_languages = {}  # Track user language preferences
         self.user_states = {}     # Track conversation states
         
-        # Define menu options for both languages
-        self.menu_options = {
-            'en': ['🏪 Services', '🛒 Order', '💬 Contact', '❓ Help'],
-            'am': ['🏪 አገልግሎቶች', '🛒 ትዕዛዝ', '💬 ያነጋግሩን', '❓ እርዳታ']
-        }
+        # Define ALL menu options from your test_bot.py
+        self.menu_options = [
+            # English menu options
+            '🏪 View Services', '🛒 Place Order', '📅 Schedule Consultation', 
+            '💬 Contact Us', '📢 Updates Channel', '❓ Help & Info',
+            # Amharic menu options  
+            '🏪 አገልግሎቶች', '🛒 ትዕዛዝ ይስጡ', '📅 ቀጠሮ ይያዙ',
+            '💬 ያነጋግሩን', '📢 መረጃ ቻናል', '❓ እርዳታ'
+        ]
         
     async def send_message(self, chat_id, text, parse_mode='HTML'):
         """Send message via Telegram API"""
@@ -131,13 +135,8 @@ class SimpleBot:
             logger.info(f"📨 Message from {first_name} ({chat_id}): {text}")
             
             # Check if it's a menu button click first
-            is_menu_option = False
-            for lang_options in self.menu_options.values():
-                if text in lang_options:
-                    is_menu_option = True
-                    break
-            
-            if is_menu_option:
+            if text in self.menu_options:
+                logger.info(f"🎯 Menu option detected: {text}")
                 await self.handle_menu_selection(chat_id, text)
                 return  # Important: return after handling menu selection
                 
@@ -157,13 +156,15 @@ class SimpleBot:
             elif self.user_states.get(chat_id) == 'awaiting_language':
                 if text.lower().startswith('en'):
                     self.user_languages[chat_id] = 'en'
+                    await self.send_message(chat_id, "🇺🇸 English selected! Showing main menu...")
                 elif text.lower().startswith('am'):
                     self.user_languages[chat_id] = 'am'
+                    await self.send_message(chat_id, "🇪🇹 አማርኛ መርጠዋል! ዋና ሜኑ እያሳየ ነው...")
                 else:
                     await self.send_message(chat_id, "Please reply with 'en' or 'am' / እባክዎን 'en' ወይም 'am' ይላኩ")
                     return
                 self.user_states[chat_id] = None
-                await self.show_menu(chat_id)
+                await self.show_main_menu(chat_id)
                 
             elif text.startswith('/help'):
                 await self.show_help(chat_id)
@@ -198,7 +199,7 @@ Reply with: /reply {chat_id} your_message"""
         except Exception as e:
             logger.error(f"❌ Error handling message: {e}")
     
-    async def show_menu(self, chat_id):
+    async def show_main_menu(self, chat_id):
         """Show main menu based on user's language"""
         lang = self.user_languages.get(chat_id, 'en')
         
@@ -206,22 +207,12 @@ Reply with: /reply {chat_id} your_message"""
             menu_text = (
                 f"🎉 ወደ {self.business_name} እንኳን በደህና መጡ!\n\n"
                 "🎯 ዛሬ እንዴት ልረዳዎት ችላለሁ?\n\n"
-                "መዝገብ:\n"
-                "🏪 አገልግሎቶች - ያገልግሎቶቻችንን ይመልከቱ\n"
-                "🛒 ትዕዛዝ - ትዕዛዝ ያድርጉ\n"
-                "💬 ያነጋግሩን - እኛን ያነጋግሩ\n"
-                "❓ እርዳታ - እርዳታ ይጠይቁ\n\n"
-                "ከታች ያሉትን ምርጫዎች ተጠቀሙ:"
+                "ከታች ያሉትን አማራጮች ይጠቀሙ:"
             )
         else:
             menu_text = (
                 f"🎉 Welcome to {self.business_name}!\n\n"
                 "🎯 How can I help you today?\n\n"
-                "Menu:\n"
-                "🏪 Services - View our printing services\n"
-                "🛒 Order - Place an order\n"
-                "💬 Contact - Get in touch with us\n"
-                "❓ Help - Get help and information\n\n"
                 "Use the options below:"
             )
         
@@ -229,46 +220,64 @@ Reply with: /reply {chat_id} your_message"""
     
     async def handle_menu_selection(self, chat_id, text):
         """Handle menu button selections"""
+        logger.info(f"🔄 Handling menu selection: {text}")
+        
         lang = self.user_languages.get(chat_id, 'en')
         
-        if text in ['🏪 Services', '🏪 አገልግሎቶች']:
-            await self.show_services(chat_id, lang)
-        elif text in ['🛒 Order', '🛒 ትዕዛዝ']:
-            await self.show_order_info(chat_id, lang)
-        elif text in ['💬 Contact', '💬 ያነጋግሩን']:
-            await self.show_contact(chat_id, lang)
-        elif text in ['❓ Help', '❓ እርዳታ']:
-            await self.show_help(chat_id, lang)
+        # Map menu options to handlers
+        menu_handlers = {
+            # English handlers
+            '🏪 View Services': self.show_services,
+            '🛒 Place Order': self.show_order_info,
+            '📅 Schedule Consultation': self.show_schedule_consultation,
+            '💬 Contact Us': self.show_contact,
+            '📢 Updates Channel': self.show_updates_channel,
+            '❓ Help & Info': self.show_help,
+            # Amharic handlers
+            '🏪 አገልግሎቶች': self.show_services,
+            '🛒 ትዕዛዝ ይስጡ': self.show_order_info,
+            '📅 ቀጠሮ ይያዙ': self.show_schedule_consultation,
+            '💬 ያነጋግሩን': self.show_contact,
+            '📢 መረጃ ቻናል': self.show_updates_channel,
+            '❓ እርዳታ': self.show_help
+        }
+        
+        handler = menu_handlers.get(text)
+        if handler:
+            await handler(chat_id, lang)
+        else:
+            logger.warning(f"❌ No handler found for menu option: {text}")
+            await self.send_message(chat_id, "Sorry, I didn't understand that option. Please try again.")
     
     async def show_services(self, chat_id, lang='en'):
-        """Show available services with enhanced UI from test_bot.py"""
+        """Show available services"""
         if lang == 'am':
             services_text = f"""
 🏪 <b>{self.business_name} - የእኛ አገልግሎቶች</b>
 
 🖨️ <b>የንግድ ካርዶች</b>
-   የሙያ ካርዶች፣ የተለያዩ አማራጮች
-   💰 ከ25 birr ጀምሮ
+• የሙያ ካርዶች፣ የተለያዩ አማራጮች
+• 💰 ከ25 ብር ጀምሮ
 
-📄 <b>ፍላየር እና ብሮሽሮች</b>
-   የማርኬቲንግ ቁሳቁሶች፣ ሙሉ ቀለም
-   💰 ከ50 birr ጀምሮ
+📄 <b>ፍላየሮች እና ብሮሽሮች</b>
+• የማርኬቲንግ ቁሳቁሶች፣ ሙሉ ቀለም
+• 💰 ከ50 ብር ጀምሮ
 
 🎯 <b>ባነሮች እና ፖስተሮች</b>
-   ትላልቅ ህትመቶች፣ የውስጥ እና የውጭ አማራጮች
-   💰 ከ75 birr ጀምሮ
+• ትላልቅ ህትመቶች፣ የውስጥ እና የውጭ አማራጮች
+• 💰 ከ75 ብር ጀምሮ
 
-📚 <b>መጽሔት እና ካታሎጎች</b>
-   ብዙ ገፅ ሰነዶች፣ የማሰሪያ አማራጮች
-   💰 ከ100 birr ጀምሮ
+📚 <b>መጽሐፍት እና ካታሎጎች</b>
+• ብዙ ገፅ ሰነዶች፣ የማሰሪያ አማራጮች
+• 💰 ከ100 ብር ጀምሮ
 
-🏷️ <b>ስቲከሮች እና መለያዎች</b>
-   ዝርዝር የተለያዩ ቅርጾች እና ስፋቶች
-   💰 ከ30 birr ጀምሮ
+🏷️ <b>ስቲከሮች እና ሌብሎች</b>
+• ዝርዝር የተለያዩ ቅርጾች እና ስፋቶች
+• 💰 ከ30 ብር ጀምሮ
 
 ⭐ <b>ልዩ ፕሮጀክቶች</b>
-   ልዩ መስፈርቶች፣ የግል አገልግሎት
-   💰 በጥያቄዎ መሰረት ዋጋ
+• ልዩ መስፈርቶች፣ የግል አገልግሎት
+• 💰 በጥያቄዎ መሰረት ዋጋ
 
 📞 <i>ለዝርዝር ዋጋዎች እና ልዩ መስፈርቶች ያነጋግሩን!</i>
             """
@@ -277,28 +286,28 @@ Reply with: /reply {chat_id} your_message"""
 🏪 <b>{self.business_name} - Services</b>
 
 🖨️ <b>Business Cards</b>
-   Professional cards, various options
-   💰 from 25 ETB
+• Professional cards, various options
+• 💰 from 25 ETB
 
 📄 <b>Flyers & Brochures</b>
-   Marketing materials, full color
-   💰 from 50 ETB
+• Marketing materials, full color
+• 💰 from 50 ETB
 
 🎯 <b>Banners & Posters</b>
-   Large prints, indoor & outdoor options
-   💰 from 75 ETB
+• Large prints, indoor & outdoor options
+• 💰 from 75 ETB
 
 📚 <b>Booklets & Catalogs</b>
-   Multi-page documents, binding options
-   💰 from 100 ETB
+• Multi-page documents, binding options
+• 💰 from 100 ETB
 
 🏷️ <b>Stickers & Labels</b>
-   Detailed various shapes and sizes
-   💰 from 30 ETB
+• Various shapes and sizes
+• 💰 from 30 ETB
 
 ⭐ <b>Custom Projects</b>
-   Special requirements, personalized service
-   💰 Quote on request
+• Special requirements, personalized service
+• 💰 Quote on request
 
 📞 <i>Contact us for detailed quotes and special requirements!</i>
             """
@@ -306,14 +315,14 @@ Reply with: /reply {chat_id} your_message"""
         await self.send_message(chat_id, services_text)
     
     async def show_order_info(self, chat_id, lang='en'):
-        """Show order information with enhanced content"""
+        """Show order information"""
         if lang == 'am':
             order_text = f"""
 🛒 <b>ትዕዛዝ ያድርጉ</b>
 
 ትዕዛዝ ለማድረግ እባክዎን ያቅርቡ:
 • የሚፈልጉት አገልግሎት ዓይነት
-• የሚሹት መጠን  
+• የሚሹት መጠን
 • የእርስዎ የመገናኛ መረጃ
 • ማናቸውንም ልዩ መስፈርቶች
 
@@ -331,7 +340,7 @@ Reply with: /reply {chat_id} your_message"""
 To place an order, please provide:
 • Service type you need
 • Quantity required
-• Your contact information  
+• Your contact information
 • Any special requirements
 
 📞 <b>Contact us:</b>
@@ -344,6 +353,37 @@ Or just send us a message here!
         
         await self.send_message(chat_id, order_text)
     
+    async def show_schedule_consultation(self, chat_id, lang='en'):
+        """Show schedule consultation information"""
+        if lang == 'am':
+            schedule_text = f"""
+📅 <b>ቀጠሮ ያስይዙ</b>
+
+የእርስዎን የህትመት ፍላጎቶች ለመወያየት ዝግጁ ነኝ!
+
+እባክዎን ያቅርቡ:
+• የሚመርጡትን ቀን/ሰአት
+• የመገኛ መረጃ
+• የእርስዎ ፕሮጀክት አጭር መግለጫ
+
+💬 ይህንን መረጃ በመልእክት መላክ ይቻላል!
+            """
+        else:
+            schedule_text = f"""
+📅 <b>Schedule Consultation</b>
+
+I'd love to discuss your printing needs!
+
+Please provide:
+• Your preferred date/time
+• Contact information
+• Brief description of your project
+
+💬 You can send this info as a message!
+            """
+        
+        await self.send_message(chat_id, schedule_text)
+    
     async def show_contact(self, chat_id, lang='en'):
         """Show contact information"""
         if lang == 'am':
@@ -351,7 +391,7 @@ Or just send us a message here!
 💬 <b>{self.business_name}ን ያነጋግሩ</b>
 
 📧 ኢሜይል: {self.business_email}
-📱 ስልክ: {self.business_phone}  
+📱 ስልክ: {self.business_phone}
 💬 ቴሌግራም: {self.business_username}
 
 💡 እዚህ ቀጥተኛ መልዕክትም መላክ ይችላሉ!
@@ -369,8 +409,37 @@ Or just send us a message here!
         
         await self.send_message(chat_id, contact_text)
     
+    async def show_updates_channel(self, chat_id, lang='en'):
+        """Show updates channel information"""
+        if lang == 'am':
+            channel_text = f"""
+📢 <b>የመረጃ ቻናል</b>
+
+ተዘጋጅተው ይቆዩ ለ:
+• 🆕 አዲስ የአገልግሎቶች ማሳወቂያዎች
+• 💰 ልዩ ቅናሾች እና ቅናሾች
+• 📸 የቅርብ ጊዜ ስራዎች ማሻያ
+• 💡 የህትመት ምክሮች እና ዘዴዎች
+
+🔔 <i>ልዩ ቅናሾችን አያምለጡ!</i>
+            """
+        else:
+            channel_text = f"""
+📢 <b>Updates Channel</b>
+
+Stay tuned for:
+• 🆕 New service announcements
+• 💰 Special discounts and offers
+• 📸 Recent work showcases
+• 💡 Printing tips and techniques
+
+🔔 <i>Don't miss special discounts!</i>
+            """
+        
+        await self.send_message(chat_id, channel_text)
+    
     async def show_help(self, chat_id, lang=None):
-        """Show help information with enhanced content"""
+        """Show help information"""
         if lang is None:
             lang = self.user_languages.get(chat_id, 'en')
         
@@ -378,20 +447,17 @@ Or just send us a message here!
             help_text = f"""
 ❓ <b>እርዳታ እና መረጃ</b>
 
-🤖 <b>አቮቸብ ትዕዛዞች:</b>
+🤖 <b>የሚገኙ ትዕዛዞች:</b>
 /start - ቦቱን ጀምር
 /help - ይህንን እርዳታ አሳይ
 
-📋 <b>የመዝገብ አማራጮች:</b>
+📋 <b>የሜኑ አማራጮች:</b>
 🏪 አገልግሎቶች - የማተሚያ አገልግሎቶቻችንን ይመልከቱ
-🛒 ትዕዛዝ - ትዕዛዝ ያድርጉ  
+🛒 ትዕዛዝ ይስጡ - ትዕዛዝ ያድርጉ
+📅 ቀጠሮ ይያዙ - ውይይት ያስይዙ
 💬 ያነጋግሩን - የእኛን የመገናኛ መረጃ ያግኙ
+📢 መረጃ ቻናል - የቅርብ ጊዜ ማሳወቂያዎች
 ❓ እርዳታ - ይህንን እርዳታ አሳይ
-
-📞 <b>የመገኛ መረጃ:</b>
-📧 {self.business_email}
-📱 {self.business_phone}
-💬 {self.business_username}
 
 💡 <b>ጠቃሚ ምክር:</b> መልዕክትዎን ብቻ ይተይቡ እና በቀጥታ እንቀበላለን!
             """
@@ -404,15 +470,12 @@ Or just send us a message here!
 /help - Show this help
 
 📋 <b>Menu Options:</b>
-🏪 Services - View our printing services
-🛒 Order - Place an order
-💬 Contact - Get our contact information  
-❓ Help - Show this help
-
-📞 <b>Contact Information:</b>
-📧 {self.business_email}
-📱 {self.business_phone}
-💬 {self.business_username}
+🏪 View Services - View our printing services
+🛒 Place Order - Place an order
+📅 Schedule Consultation - Book a consultation
+💬 Contact Us - Get our contact information
+📢 Updates Channel - Recent announcements
+❓ Help & Info - Show this help
 
 💡 <b>Tip:</b> Just type your message and we'll get it directly!
             """
