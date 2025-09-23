@@ -45,7 +45,7 @@ TRANSLATIONS = {
         'learn_more': 'Learn More'
     },
     'am': {
-        'home': 'ቤት',
+        'home': 'home',
         'services': 'አገልግሎቶች',
         'order': 'ትዕዛዝ ይስጡ',
         'contact': 'ያነጋግሩን',
