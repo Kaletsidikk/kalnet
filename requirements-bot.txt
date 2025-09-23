@@ -1,0 +1,22 @@
+# Bot-specific requirements for Fly.io deployment
+# Core Telegram bot dependencies
+python-telegram-bot==20.7
+requests==2.31.0
+
+# Database (SQLite built into Python)
+# No additional database dependencies needed for SQLite
+
+# Environment variables
+python-dotenv==1.0.0
+
+# Date and time handling
+python-dateutil==2.8.2
+
+# Flask for health endpoint (minimal)
+Flask==3.0.0
+
+# Optional: If using PostgreSQL instead of SQLite
+# psycopg2-binary==2.9.7
+
+# Production server (optional, Fly.io handles this)
+# gunicorn==21.2.0

@@ -1,12 +1,12 @@
 services:
-  # Telegram Bot Service
+  # Ultra-Fast Combined Service
   - type: web
-    name: printing-business-bot
+    name: kalnetworks-ultra-fast
     env: python
     region: oregon
     plan: starter
-    buildCommand: pip install -r requirements.txt && python database/init_db.py
-    startCommand: python bot/bot.py
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: python render_deploy.py
     envVars:
       - key: BOT_TOKEN
         sync: false
@@ -18,57 +18,25 @@ services:
         generateValue: true
       - key: FLASK_ENV
         value: production
+      - key: RUN_MODE
+        value: both
       - key: BUSINESS_NAME
-        value: "kalnetworks"
+        value: "KalNetworks – Printing & Business Solutions"
       - key: BUSINESS_EMAIL
-        value: "gebeyatechnologies.com"
+        value: "gebeyatechnologies@gmail.com"
       - key: BUSINESS_PHONE
-        value: "+251965552595"
+        value: "0965552595"
       - key: BUSINESS_ADDRESS
-        value: "Addis Ababa, Ethiopia"
-      - key: DATABASE_URL
-        value: "sqlite:///database/printing_business.db"
+        value: "KalNetworks Business Center"
+      - key: BUSINESS_USERNAME
+        value: "@ABISSINIANJA"
     
-    # Health checks
+    # Ultra-fast health checks
     healthCheckPath: /health
     
-    # Auto-deploy
+    # Auto-deploy with optimizations
     autoDeploy: true
-
-  # Website Service (Optional - can be deployed separately)
-  - type: web
-    name: printing-business-website
-    env: python
-    region: oregon
-    plan: starter
-    buildCommand: pip install -r requirements.txt && python database/init_db.py
-    startCommand: python website/app.py
-    envVars:
-      - key: BOT_TOKEN
-        sync: false
-      - key: ADMIN_CHAT_ID
-        sync: false
-      - key: CHANNEL_USERNAME
-        sync: false
-      - key: FLASK_SECRET_KEY
-        generateValue: true
-      - key: FLASK_ENV
-        value: production
-      - key: BUSINESS_NAME
-        value: "Printing Business"
-      - key: BUSINESS_EMAIL
-        value: "contact@printingbusiness.com"
-      - key: BUSINESS_PHONE
-        value: "+1234567890"
-      - key: BUSINESS_ADDRESS
-        value: "Business Address"
-      - key: DATABASE_URL
-        value: "sqlite:///database/printing_business.db"
-      - key: PORT
-        value: "10000"
+    preDeployCommand: echo "🚀 Ultra-fast deployment starting..."
     
-    # Health checks
-    healthCheckPath: /
-    
-    # Auto-deploy
-    autoDeploy: true
+    # Performance optimizations
+    numInstances: 1

@@ -1,1 +1,1 @@
-web: python start_bot.py
+web: python render_deploy.py
