@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Enhanced Render Bot Deployment - Fixed Menu Handling
-Uses a basic HTTP server approach that's compatible with Render
+Enhanced Render Bot Deployment - Fixed Version
+Uses Flask's built-in server (no waitress dependency)
 """
 
 import os
@@ -132,12 +132,13 @@ class SimpleBot:
             return []
 
     async def clear_webhook(self):
-        """Clear any existing webhook"""
+        """Clear any existing webhook - FIXED VERSION"""
         import aiohttp
         try:
             url = f"https://api.telegram.org/bot{self.bot_token}/deleteWebhook"
+            # Fixed: Remove problematic boolean parameter
             async with aiohttp.ClientSession() as session:
-                async with session.post(url, params={"drop_pending_updates": True}) as response:
+                async with session.post(url) as response:
                     if response.status == 200:
                         logger.info("✅ Webhook cleared successfully")
                     else:
@@ -563,7 +564,7 @@ Stay tuned for:
                 await asyncio.sleep(5)  # Wait before retrying
 
 def start_health_server():
-    """Start Flask health check server"""
+    """Start Flask health check server - FIXED (no waitress)"""
     from flask import Flask
     
     app = Flask(__name__)
@@ -587,9 +588,8 @@ def start_health_server():
     port = int(os.environ.get('PORT', 5000))
     logger.info(f"✅ Health server starting on port {port}")
     
-    # Use simple server without debug
-    from waitress import serve
-    serve(app, host='0.0.0.0', port=port)
+    # Use Flask's built-in server (no waitress dependency)
+    app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
 
 def run_bot_async():
     """Run bot in async event loop"""
