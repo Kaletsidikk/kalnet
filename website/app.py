@@ -215,11 +215,11 @@ def initialize_app():
             class DummyServiceModel:
                 def get_active_services(self):
                     return [
-                        {'id': 1, 'name': 'Business Cards', 'description': 'Professional business cards', 'price_range': 'From 20 birr'},
-                        {'id': 2, 'name': 'Flyers/Brochures', 'description': 'Marketing materials', 'price_range': 'From 50 birr'},
-                        {'id': 3, 'name': 'Banners/Posters', 'description': 'Large format printing', 'price_range': 'From 100 birr'},
-                        {'id': 4, 'name': 'Booklets/Catalogs', 'description': 'Professional booklets and catalogs', 'price_range': 'From 75 birr'},
-                        {'id': 5, 'name': 'Stickers/Labels', 'description': 'Custom stickers and labels', 'price_range': 'From 30 birr'},
+                        {'id': 1, 'name': 'Business Cards', 'description': 'Professional business cards', 'price_range': 'Starting from 20 birr'},
+                        {'id': 2, 'name': 'Flyers/Brochures', 'description': 'Marketing materials', 'price_range': 'Starting from 50 birr'},
+                        {'id': 3, 'name': 'Banners/Posters', 'description': 'Large format printing', 'price_range': 'Starting from 100 birr'},
+                        {'id': 4, 'name': 'Booklets/Catalogs', 'description': 'Professional booklets and catalogs', 'price_range': 'Starting from  75 birr'},
+                        {'id': 5, 'name': 'Stickers/Labels', 'description': 'Custom stickers and labels', 'price_range': 'Starting from  30 birr'},
                         {'id': 6, 'name': 'Custom Printing', 'description': 'Custom printing solutions', 'price_range': 'Contact for quote'}
                     ]
             
