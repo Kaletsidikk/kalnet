@@ -1,12 +1,12 @@
 services:
-  # Ultra-Fast Combined Service
+  # Telegram Bot Service
   - type: web
-    name: kalnetworks-ultra-fast
+    name: kalnetworks-telegram-bot
     env: python
     region: oregon
     plan: starter
     buildCommand: pip install --no-cache-dir -r requirements.txt
-    startCommand: python render_deploy.py
+    startCommand: python render_deploy_bot.py
     envVars:
       - key: BOT_TOKEN
         sync: false
@@ -14,12 +14,6 @@ services:
         sync: false
       - key: CHANNEL_USERNAME
         sync: false
-      - key: FLASK_SECRET_KEY
-        generateValue: true
-      - key: FLASK_ENV
-        value: production
-      - key: RUN_MODE
-        value: both
       - key: BUSINESS_NAME
         value: "KalNetworks – Printing & Business Solutions"
       - key: BUSINESS_EMAIL
@@ -30,13 +24,65 @@ services:
         value: "KalNetworks Business Center"
       - key: BUSINESS_USERNAME
         value: "@ABISSINIANJA"
-    
-    # Ultra-fast health checks
+      - key: PORT
+        value: "5000"
     healthCheckPath: /health
-    
-    # Auto-deploy with optimizations
     autoDeploy: true
-    preDeployCommand: echo "🚀 Ultra-fast deployment starting..."
     
-    # Performance optimizations
-    numInstances: 1
+  # Main Website Service
+  - type: web
+    name: kalnetworks-website
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: python app_fast.py
+    envVars:
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: BUSINESS_NAME
+        value: "KalNetworks – Printing & Business Solutions"
+      - key: BUSINESS_EMAIL
+        value: "gebeyatechnologies@gmail.com"
+      - key: BUSINESS_PHONE
+        value: "0965552595"
+      - key: BUSINESS_ADDRESS
+        value: "KalNetworks Business Center"
+      - key: BUSINESS_USERNAME
+        value: "@ABISSINIANJA"
+      - key: PORT
+        value: "5000"
+    healthCheckPath: /health
+    autoDeploy: true
+    
+  # Admin Dashboard Service
+  - type: web
+    name: kalnetworks-dashboard
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: python render_deploy_dashboard.py
+    envVars:
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: ADMIN_PASSWORD
+        value: "kalnetworks2024"
+      - key: BUSINESS_NAME
+        value: "KalNetworks – Printing & Business Solutions"
+      - key: BUSINESS_EMAIL
+        value: "gebeyatechnologies@gmail.com"
+      - key: BUSINESS_PHONE
+        value: "0965552595"
+      - key: BUSINESS_ADDRESS
+        value: "KalNetworks Business Center"
+      - key: BUSINESS_USERNAME
+        value: "@ABISSINIANJA"
+      - key: PORT
+        value: "5001"
+    healthCheckPath: /health
+    autoDeploy: true
