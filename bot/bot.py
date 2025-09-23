@@ -67,8 +67,7 @@ class PrintingBot:
     
     async def help_command(self, update: Update, context) -> None:
         """Handle the /help command"""
-        help_text = f\"\"\"
-<b>🖨️ {BUSINESS_NAME} - Help</b>
+        help_text = f"""<b>🖨️ {BUSINESS_NAME} - Help</b>
 
 <b>Available Commands:</b>
 /start - Start the bot and show main menu
@@ -87,8 +86,7 @@ class PrintingBot:
 📞 Phone: {BUSINESS_PHONE}
 📍 Address: {BUSINESS_ADDRESS}
 
-For immediate assistance, use the "Message Me Directly" option!
-        \"\"\"
+For immediate assistance, use the "Message Me Directly" option!"""
         
         await update.message.reply_text(help_text, parse_mode='HTML')
     
