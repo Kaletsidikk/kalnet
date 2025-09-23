@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Enhanced Render Bot Deployment - Fixed Version
+Enhanced Render Bot Deployment - Fixed Version for 24/7 Operation
 Uses Flask's built-in server (no waitress dependency)
 """
 
@@ -538,13 +538,16 @@ Stay tuned for:
         await self.send_message(chat_id, help_text)
 
     async def run_bot(self):
-        """Main bot polling loop"""
+        """Main bot polling loop with enhanced error recovery"""
         logger.info("🤖 Starting enhanced bot polling...")
         self.running = True
         offset = 0
         
         # Clear webhook first to avoid conflicts
         await self.clear_webhook()
+        
+        error_count = 0
+        max_errors = 10
         
         while self.running:
             try:
@@ -556,11 +559,20 @@ Stay tuned for:
                     if 'message' in update:
                         await self.handle_message(update['message'])
                 
+                # Reset error count on successful iteration
+                error_count = 0
                 # Small delay to prevent overwhelming the API
                 await asyncio.sleep(0.5)
                 
             except Exception as e:
-                logger.error(f"❌ Bot polling error: {e}")
+                error_count += 1
+                logger.error(f"❌ Bot polling error #{error_count}: {e}")
+                
+                if error_count >= max_errors:
+                    logger.error("🚨 Too many consecutive errors, restarting bot...")
+                    await asyncio.sleep(30)  # Wait longer before restart
+                    error_count = 0
+                
                 await asyncio.sleep(5)  # Wait before retrying
 
 def start_health_server():
@@ -603,7 +615,7 @@ def run_bot_async():
         logger.error(traceback.format_exc())
 
 def main():
-    """Main function for enhanced bot deployment"""
+    """Main function for enhanced bot deployment - FIXED for 24/7 operation"""
     start_time = time.time()
     logger.info("🤖 RENDER ENHANCED BOT DEPLOYMENT")
     logger.info("=" * 50)
@@ -617,18 +629,19 @@ def main():
             logger.error("❌ Environment check failed")
             sys.exit(1)
         
-        logger.info("🎯 Mode: ENHANCED BOT SERVICE (Fixed Menu Handling)")
+        logger.info("🎯 Mode: ENHANCED BOT SERVICE (24/7 Fixed)")
         
-        # Start bot in background thread
-        logger.info("🤖 Starting bot thread...")
-        bot_thread = threading.Thread(target=run_bot_async, daemon=True)
-        bot_thread.start()
+        # Start health server in a separate thread
+        logger.info("🌐 Starting health server thread...")
+        server_thread = threading.Thread(target=start_health_server, daemon=True)
+        server_thread.start()
         
-        # Give bot time to start
-        time.sleep(2)
+        # Give server time to start
+        time.sleep(3)
         
-        # Start health server in main thread (required by Render)
-        start_health_server()
+        # Run bot in the main thread (this will keep the process alive)
+        logger.info("🤖 Starting bot in main thread...")
+        run_bot_async()
     
     except KeyboardInterrupt:
         logger.info("🛑 Bot shutdown requested by user")

@@ -37,7 +37,7 @@ except Exception as e:
         SECRET_KEY = 'dev-key-change-in-production'
         BUSINESS_NAME = "KalNetworks Printing"
         BUSINESS_EMAIL = "info@kalnetworks.com"
-        BUSINESS_PHONE = "+251-XXX-XXXXXX"
+        BUSINESS_PHONE = "+251-965552595"
         BUSINESS_ADDRESS = "Addis Ababa, Ethiopia"
         CHANNEL_USERNAME = "@kalnetworks"
     
@@ -105,7 +105,7 @@ SIMPLE_TRANSLATIONS = {
         'Schedule Consultation': 'Schedule Consultation'
     },
     'am': {
-        'Home': 'ቤት',
+        'Home': 'Home',
         'Services': 'አገልግሎቶች',
         'Order': 'ትዕዛዝ',
         'Schedule': 'ፕሮግራም',
@@ -215,11 +215,11 @@ def initialize_app():
             class DummyServiceModel:
                 def get_active_services(self):
                     return [
-                        {'id': 1, 'name': 'Business Cards', 'description': 'Professional business cards', 'price_range': 'From $20'},
-                        {'id': 2, 'name': 'Flyers/Brochures', 'description': 'Marketing materials', 'price_range': 'From $50'},
-                        {'id': 3, 'name': 'Banners/Posters', 'description': 'Large format printing', 'price_range': 'From $100'},
-                        {'id': 4, 'name': 'Booklets/Catalogs', 'description': 'Professional booklets and catalogs', 'price_range': 'From $75'},
-                        {'id': 5, 'name': 'Stickers/Labels', 'description': 'Custom stickers and labels', 'price_range': 'From $30'},
+                        {'id': 1, 'name': 'Business Cards', 'description': 'Professional business cards', 'price_range': 'From 20 birr'},
+                        {'id': 2, 'name': 'Flyers/Brochures', 'description': 'Marketing materials', 'price_range': 'From 50 birr'},
+                        {'id': 3, 'name': 'Banners/Posters', 'description': 'Large format printing', 'price_range': 'From 100 birr'},
+                        {'id': 4, 'name': 'Booklets/Catalogs', 'description': 'Professional booklets and catalogs', 'price_range': 'From 75 birr'},
+                        {'id': 5, 'name': 'Stickers/Labels', 'description': 'Custom stickers and labels', 'price_range': 'From 30 birr'},
                         {'id': 6, 'name': 'Custom Printing', 'description': 'Custom printing solutions', 'price_range': 'Contact for quote'}
                     ]
             
