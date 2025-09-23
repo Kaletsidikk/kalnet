@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple Render Bot Deployment - No Updater Issues
+Enhanced Render Bot Deployment - Fixed Menu Handling
 Uses a basic HTTP server approach that's compatible with Render
 """
 
@@ -53,7 +53,7 @@ def check_environment():
     return True
 
 class SimpleBot:
-    """Enhanced bot implementation with all features but no Updater issues"""
+    """Enhanced bot implementation with proper menu handling"""
     
     def __init__(self):
         self.bot_token = os.getenv('BOT_TOKEN')
@@ -65,6 +65,12 @@ class SimpleBot:
         self.running = False
         self.user_languages = {}  # Track user language preferences
         self.user_states = {}     # Track conversation states
+        
+        # Define menu options for both languages
+        self.menu_options = {
+            'en': ['🏪 Services', '🛒 Order', '💬 Contact', '❓ Help'],
+            'am': ['🏪 አገልግሎቶች', '🛒 ትዕዛዝ', '💬 ያነጋግሩን', '❓ እርዳታ']
+        }
         
     async def send_message(self, chat_id, text, parse_mode='HTML'):
         """Send message via Telegram API"""
@@ -115,7 +121,7 @@ class SimpleBot:
             return []
 
     async def handle_message(self, message):
-        """Handle incoming message"""
+        """Handle incoming message with proper menu handling"""
         try:
             chat_id = message['chat']['id']
             text = message.get('text', '')
@@ -124,6 +130,17 @@ class SimpleBot:
             
             logger.info(f"📨 Message from {first_name} ({chat_id}): {text}")
             
+            # Check if it's a menu button click first
+            is_menu_option = False
+            for lang_options in self.menu_options.values():
+                if text in lang_options:
+                    is_menu_option = True
+                    break
+            
+            if is_menu_option:
+                await self.handle_menu_selection(chat_id, text)
+                return  # Important: return after handling menu selection
+                
             if text.startswith('/start'):
                 # Ask for language selection
                 lang_text = (
@@ -151,11 +168,8 @@ class SimpleBot:
             elif text.startswith('/help'):
                 await self.show_help(chat_id)
                 
-            elif text in ['🏪 Services', '🛒 Order', '💬 Contact', '❓ Help', '🏪 አገልግሎቶች', '🛒 ትዕዛዝ', '💬 ያነጋግሩን', '❓ እርዳታ']:
-                await self.handle_menu_selection(chat_id, text)
-                
             else:
-                # Forward message to admin
+                # Forward message to admin ONLY if it's not a menu option and not from admin
                 if str(chat_id) != str(self.admin_chat_id):
                     forward_text = f"""<b>📨 New Message</b>
 
@@ -227,123 +241,187 @@ Reply with: /reply {chat_id} your_message"""
             await self.show_help(chat_id, lang)
     
     async def show_services(self, chat_id, lang='en'):
-        """Show available services"""
+        """Show available services with enhanced UI from test_bot.py"""
         if lang == 'am':
-            services_text = (
-                f"🏪 {self.business_name} - አገልግሎቶች\n\n"
-                "🖨️ የንግድ ካርዶች - ከ 25 ብር ጀምሮ\n"
-                "📄 ፍላየሮች እና ብሮሽዎች - ከ 50 ብር ጀምሮ\n"
-                "🎯 ባነሮች እና ፖስተሮች - ከ 75 ብር ጀምሮ\n"
-                "📚 መጽሐፍ እና ካታሎጎች - ከ 100 ብር ጀምሮ\n"
-                "🏷️ ስቲከሮች እና ሌብሎች - ከ 30 ብር ጀምሮ\n"
-                "⭐ ልዩ ፕሮጀክቶች - ዋጋ በጥያቄ መሰረት\n\n"
-                "📞 ለዝርዝር ዋጋ ይደውሉልን!"
-            )
+            services_text = f"""
+🏪 <b>{self.business_name} - የእኛ አገልግሎቶች</b>
+
+🖨️ <b>የንግድ ካርዶች</b>
+   የሙያ ካርዶች፣ የተለያዩ አማራጮች
+   💰 ከ25 birr ጀምሮ
+
+📄 <b>ፍላየር እና ብሮሽሮች</b>
+   የማርኬቲንግ ቁሳቁሶች፣ ሙሉ ቀለም
+   💰 ከ50 birr ጀምሮ
+
+🎯 <b>ባነሮች እና ፖስተሮች</b>
+   ትላልቅ ህትመቶች፣ የውስጥ እና የውጭ አማራጮች
+   💰 ከ75 birr ጀምሮ
+
+📚 <b>መጽሔት እና ካታሎጎች</b>
+   ብዙ ገፅ ሰነዶች፣ የማሰሪያ አማራጮች
+   💰 ከ100 birr ጀምሮ
+
+🏷️ <b>ስቲከሮች እና መለያዎች</b>
+   ዝርዝር የተለያዩ ቅርጾች እና ስፋቶች
+   💰 ከ30 birr ጀምሮ
+
+⭐ <b>ልዩ ፕሮጀክቶች</b>
+   ልዩ መስፈርቶች፣ የግል አገልግሎት
+   💰 በጥያቄዎ መሰረት ዋጋ
+
+📞 <i>ለዝርዝር ዋጋዎች እና ልዩ መስፈርቶች ያነጋግሩን!</i>
+            """
         else:
-            services_text = (
-                f"🏪 {self.business_name} - Services\n\n"
-                "🖨️ Business Cards - from 25 ETB\n"
-                "📄 Flyers & Brochures - from 50 ETB\n"
-                "🎯 Banners & Posters - from 75 ETB\n"
-                "📚 Booklets & Catalogs - from 100 ETB\n"
-                "🏷️ Stickers & Labels - from 30 ETB\n"
-                "⭐ Custom Projects - Quote on request\n\n"
-                "📞 Contact us for detailed quotes!"
-            )
+            services_text = f"""
+🏪 <b>{self.business_name} - Services</b>
+
+🖨️ <b>Business Cards</b>
+   Professional cards, various options
+   💰 from 25 ETB
+
+📄 <b>Flyers & Brochures</b>
+   Marketing materials, full color
+   💰 from 50 ETB
+
+🎯 <b>Banners & Posters</b>
+   Large prints, indoor & outdoor options
+   💰 from 75 ETB
+
+📚 <b>Booklets & Catalogs</b>
+   Multi-page documents, binding options
+   💰 from 100 ETB
+
+🏷️ <b>Stickers & Labels</b>
+   Detailed various shapes and sizes
+   💰 from 30 ETB
+
+⭐ <b>Custom Projects</b>
+   Special requirements, personalized service
+   💰 Quote on request
+
+📞 <i>Contact us for detailed quotes and special requirements!</i>
+            """
         
         await self.send_message(chat_id, services_text)
     
     async def show_order_info(self, chat_id, lang='en'):
-        """Show order information"""
+        """Show order information with enhanced content"""
         if lang == 'am':
-            order_text = (
-                "🛒 ትዕዛዝ ያድርጉ\n\n"
-                "ትዕዛዝ ለማድረግ እባክዎን ያቅርቡ:\n"
-                "• የሚፈልጉት አገልግሎት ዓይነት\n"
-                "• የሚሹት መጠን\n"
-                "• የእርስዎ የመገናኛ መረጃ\n"
-                "• ማናቸውንም ልዩ መስፈርቶች\n\n"
-                "📞 ያነጋግሩን:\n"
-                f"📧 {self.business_email}\n"
-                f"📱 {self.business_phone}\n"
-                f"💬 {self.business_username}\n\n"
-                "ወይም እዚህ መልዕክት ይላኩልን!"
-            )
+            order_text = f"""
+🛒 <b>ትዕዛዝ ያድርጉ</b>
+
+ትዕዛዝ ለማድረግ እባክዎን ያቅርቡ:
+• የሚፈልጉት አገልግሎት ዓይነት
+• የሚሹት መጠን  
+• የእርስዎ የመገናኛ መረጃ
+• ማናቸውንም ልዩ መስፈርቶች
+
+📞 <b>ያነጋግሩን:</b>
+📧 {self.business_email}
+📱 {self.business_phone}
+💬 {self.business_username}
+
+ወይም እዚህ መልዕክት ይላኩልን!
+            """
         else:
-            order_text = (
-                "🛒 Place Your Order\n\n"
-                "To place an order, please provide:\n"
-                "• Service type you need\n"
-                "• Quantity required\n"
-                "• Your contact information\n"
-                "• Any special requirements\n\n"
-                "📞 Contact us:\n"
-                f"📧 {self.business_email}\n"
-                f"📱 {self.business_phone}\n"
-                f"💬 {self.business_username}\n\n"
-                "Or just send us a message here!"
-            )
+            order_text = f"""
+🛒 <b>Place Your Order</b>
+
+To place an order, please provide:
+• Service type you need
+• Quantity required
+• Your contact information  
+• Any special requirements
+
+📞 <b>Contact us:</b>
+📧 {self.business_email}
+📱 {self.business_phone}
+💬 {self.business_username}
+
+Or just send us a message here!
+            """
         
         await self.send_message(chat_id, order_text)
     
     async def show_contact(self, chat_id, lang='en'):
         """Show contact information"""
         if lang == 'am':
-            contact_text = (
-                f"💬 {self.business_name}ን ያነጋግሩ\n\n"
-                f"📧 ኢሜይል: {self.business_email}\n"
-                f"📱 ስልክ: {self.business_phone}\n"
-                f"💬 ቴሌግራም: {self.business_username}\n\n"
-                "💡 እዚህ ቀጥተኛ መልዕክትም መላክ ይችላሉ!"
-            )
+            contact_text = f"""
+💬 <b>{self.business_name}ን ያነጋግሩ</b>
+
+📧 ኢሜይል: {self.business_email}
+📱 ስልክ: {self.business_phone}  
+💬 ቴሌግራም: {self.business_username}
+
+💡 እዚህ ቀጥተኛ መልዕክትም መላክ ይችላሉ!
+            """
         else:
-            contact_text = (
-                f"💬 Contact {self.business_name}\n\n"
-                f"📧 Email: {self.business_email}\n"
-                f"📱 Phone: {self.business_phone}\n"
-                f"💬 Telegram: {self.business_username}\n\n"
-                "💡 You can also send us a message directly here!"
-            )
+            contact_text = f"""
+💬 <b>Contact {self.business_name}</b>
+
+📧 Email: {self.business_email}
+📱 Phone: {self.business_phone}
+💬 Telegram: {self.business_username}
+
+💡 You can also send us a message directly here!
+            """
         
         await self.send_message(chat_id, contact_text)
     
     async def show_help(self, chat_id, lang=None):
-        """Show help information"""
+        """Show help information with enhanced content"""
         if lang is None:
             lang = self.user_languages.get(chat_id, 'en')
         
         if lang == 'am':
-            help_text = (
-                "❓ እርዳታ እና መረጃ\n\n"
-                "🤖 አቮቸብ ትዕዛዞች:\n"
-                "/start - ቦቱን ጀምር\n"
-                "/help - ይህንን እርዳታ አሳይ\n\n"
-                "📋 የመዝገብ አማራጮች:\n"
-                "🏪 አገልግሎቶች - የማተሚያ አገልግሎቶቻችንን ይመልከቱ\n"
-                "🛒 ትዕዛዝ - ትዕዛዝ ያድርጉ\n"
-                "💬 ያነጋግሩን - የእኛን የመገናኛ መረጃ ያግኙ\n"
-                "❓ እርዳታ - ይህንን እርዳታ አሳይ\n\n"
-                "💡 ጠቃሚ ምክር: መልዕክትዎን ብቻ ይተይቡ እና በቀጥታ እንቀበላለን!"
-            )
+            help_text = f"""
+❓ <b>እርዳታ እና መረጃ</b>
+
+🤖 <b>አቮቸብ ትዕዛዞች:</b>
+/start - ቦቱን ጀምር
+/help - ይህንን እርዳታ አሳይ
+
+📋 <b>የመዝገብ አማራጮች:</b>
+🏪 አገልግሎቶች - የማተሚያ አገልግሎቶቻችንን ይመልከቱ
+🛒 ትዕዛዝ - ትዕዛዝ ያድርጉ  
+💬 ያነጋግሩን - የእኛን የመገናኛ መረጃ ያግኙ
+❓ እርዳታ - ይህንን እርዳታ አሳይ
+
+📞 <b>የመገኛ መረጃ:</b>
+📧 {self.business_email}
+📱 {self.business_phone}
+💬 {self.business_username}
+
+💡 <b>ጠቃሚ ምክር:</b> መልዕክትዎን ብቻ ይተይቡ እና በቀጥታ እንቀበላለን!
+            """
         else:
-            help_text = (
-                "❓ Help & Information\n\n"
-                "🤖 Available Commands:\n"
-                "/start - Start the bot\n"
-                "/help - Show this help\n\n"
-                "📋 Menu Options:\n"
-                "🏪 Services - View our printing services\n"
-                "🛒 Order - Place an order\n"
-                "💬 Contact - Get our contact information\n"
-                "❓ Help - Show this help\n\n"
-                "💡 Tip: Just type your message and we'll get it directly!"
-            )
+            help_text = f"""
+❓ <b>Help & Information</b>
+
+🤖 <b>Available Commands:</b>
+/start - Start the bot
+/help - Show this help
+
+📋 <b>Menu Options:</b>
+🏪 Services - View our printing services
+🛒 Order - Place an order
+💬 Contact - Get our contact information  
+❓ Help - Show this help
+
+📞 <b>Contact Information:</b>
+📧 {self.business_email}
+📱 {self.business_phone}
+💬 {self.business_username}
+
+💡 <b>Tip:</b> Just type your message and we'll get it directly!
+            """
         
         await self.send_message(chat_id, help_text)
 
     async def run_bot(self):
         """Main bot polling loop"""
-        logger.info("🤖 Starting simple bot polling...")
+        logger.info("🤖 Starting enhanced bot polling...")
         self.running = True
         offset = 0
         
@@ -402,9 +480,9 @@ def run_bot_async():
         logger.error(f"❌ Async bot error: {e}")
 
 def main():
-    """Main function for simple bot deployment"""
+    """Main function for enhanced bot deployment"""
     start_time = time.time()
-    logger.info("🤖 RENDER SIMPLE BOT DEPLOYMENT")
+    logger.info("🤖 RENDER ENHANCED BOT DEPLOYMENT")
     logger.info("=" * 50)
     
     try:
@@ -416,7 +494,7 @@ def main():
             logger.error("❌ Environment check failed")
             sys.exit(1)
         
-        logger.info("🎯 Mode: SIMPLE BOT SERVICE")
+        logger.info("🎯 Mode: ENHANCED BOT SERVICE (Fixed Menu Handling)")
         
         # Start bot in background thread
         logger.info("🤖 Starting bot thread...")
