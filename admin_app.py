@@ -335,9 +335,14 @@ def api_setting(setting_key):
     value = settings_manager.get_setting(setting_key)
     return jsonify({'key': setting_key, 'value': value})
 
+# Production configuration
 if __name__ == '__main__':
     # Create templates directory if it doesn't exist
     os.makedirs('templates', exist_ok=True)
     os.makedirs('static', exist_ok=True)
     
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    # Production configuration
+    port = int(os.environ.get('PORT', 5001))
+    debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    
+    app.run(host='0.0.0.0', port=port, debug=debug)
