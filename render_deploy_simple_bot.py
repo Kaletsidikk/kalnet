@@ -94,7 +94,8 @@ class SimpleBot:
                         logger.info(f"✅ Message sent to {chat_id}")
                         return True
                     else:
-                        logger.error(f"❌ Failed to send message: {response.status}")
+                        error_text = await response.text()
+                        logger.error(f"❌ Failed to send message: {response.status} - {error_text}")
                         return False
         except Exception as e:
             logger.error(f"❌ Error sending message: {e}")
@@ -117,12 +118,32 @@ class SimpleBot:
                     if response.status == 200:
                         data = await response.json()
                         return data.get('result', [])
+                    elif response.status == 409:
+                        logger.error("❌ 409 Conflict: Another bot instance is running")
+                        # Try to clear webhook
+                        await self.clear_webhook()
+                        return []
                     else:
-                        logger.error(f"❌ Failed to get updates: {response.status}")
+                        error_text = await response.text()
+                        logger.error(f"❌ Failed to get updates: {response.status} - {error_text}")
                         return []
         except Exception as e:
             logger.error(f"❌ Error getting updates: {e}")
             return []
+
+    async def clear_webhook(self):
+        """Clear any existing webhook"""
+        import aiohttp
+        try:
+            url = f"https://api.telegram.org/bot{self.bot_token}/deleteWebhook"
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, params={"drop_pending_updates": True}) as response:
+                    if response.status == 200:
+                        logger.info("✅ Webhook cleared successfully")
+                    else:
+                        logger.warning("⚠️ Could not clear webhook")
+        except Exception as e:
+            logger.warning(f"⚠️ Webhook clear attempt failed: {e}")
 
     async def handle_message(self, message):
         """Handle incoming message with proper menu handling"""
@@ -141,64 +162,97 @@ class SimpleBot:
                 return  # Important: return after handling menu selection
                 
             if text.startswith('/start'):
-                # Ask for language selection
-                lang_text = (
-                    f"🤖 Welcome to {self.business_name}!\n"
-                    f"🇪🇹 ወደ {self.business_name} እንኳን በደህና መጡ!\n\n"
-                    "🌐 Choose your language / ቋንቋ ይምረጡ:\n"
-                    "• en - English\n"
-                    "• am - አማርኛ\n\n"
-                    "Reply with: en or am"
-                )
-                await self.send_message(chat_id, lang_text)
-                self.user_states[chat_id] = 'awaiting_language'
-                
-            elif self.user_states.get(chat_id) == 'awaiting_language':
-                if text.lower().startswith('en'):
-                    self.user_languages[chat_id] = 'en'
-                    await self.send_message(chat_id, "🇺🇸 English selected! Showing main menu...")
-                elif text.lower().startswith('am'):
-                    self.user_languages[chat_id] = 'am'
-                    await self.send_message(chat_id, "🇪🇹 አማርኛ መርጠዋል! ዋና ሜኑ እያሳየ ነው...")
-                else:
-                    await self.send_message(chat_id, "Please reply with 'en' or 'am' / እባክዎን 'en' ወይም 'am' ይላኩ")
-                    return
-                self.user_states[chat_id] = None
-                await self.show_main_menu(chat_id)
+                await self.handle_start(chat_id, first_name)
                 
             elif text.startswith('/help'):
                 await self.show_help(chat_id)
                 
+            elif text.startswith('/reply') and str(chat_id) == str(self.admin_chat_id):
+                await self.handle_admin_reply(text)
+                
+            elif self.user_states.get(chat_id) == 'awaiting_language':
+                await self.handle_language_selection(chat_id, text)
+                
             else:
-                # Forward message to admin ONLY if it's not a menu option and not from admin
-                if str(chat_id) != str(self.admin_chat_id):
-                    forward_text = f"""<b>📨 New Message</b>
+                await self.handle_regular_message(chat_id, text, user, first_name)
+                
+        except Exception as e:
+            logger.error(f"❌ Error handling message: {e}")
+            logger.error(traceback.format_exc())
+    
+    async def handle_start(self, chat_id, first_name):
+        """Handle /start command"""
+        # Ask for language selection
+        lang_text = (
+            f"🤖 Welcome to {self.business_name}!\n"
+            f"🇪🇹 ወደ {self.business_name} እንኳን በደህና መጡ!\n\n"
+            "🌐 Choose your language / ቋንቋ ይምረጡ:\n"
+            "• en - English\n"
+            "• am - አማርኛ\n\n"
+            "Reply with: en or am"
+        )
+        await self.send_message(chat_id, lang_text)
+        self.user_states[chat_id] = 'awaiting_language'
+    
+    async def handle_language_selection(self, chat_id, text):
+        """Handle language selection"""
+        if text.lower().startswith('en'):
+            self.user_languages[chat_id] = 'en'
+            await self.send_message(chat_id, "🇺🇸 English selected! Showing main menu...")
+        elif text.lower().startswith('am'):
+            self.user_languages[chat_id] = 'am'
+            await self.send_message(chat_id, "🇪🇹 አማርኛ መርጠዋል! ዋና ሜኑ እያሳየ ነው...")
+        else:
+            await self.send_message(chat_id, "Please reply with 'en' or 'am' / እባክዎን 'en' ወይም 'am' ይላኩ")
+            return
+        
+        self.user_states[chat_id] = None
+        await self.show_main_menu(chat_id)
+    
+    async def handle_regular_message(self, chat_id, text, user, first_name):
+        """Handle regular user messages"""
+        # Forward message to admin ONLY if it's not a menu option and not from admin
+        if str(chat_id) != str(self.admin_chat_id):
+            forward_text = f"""<b>📨 New Message</b>
 
 <b>From:</b> {first_name} (@{user.get('username', 'N/A')})
 <b>Chat ID:</b> {chat_id}
 <b>Message:</b> {text}
 
 Reply with: /reply {chat_id} your_message"""
-                    await self.send_message(self.admin_chat_id, forward_text)
-                
-                # Reply to user depending on language
-                lang = self.user_languages.get(chat_id, 'en')
-                if lang == 'am':
-                    reply_text = (
-                        "እናመሰግናለን! መልዕክትዎ ተቀብሏል። በተቻለ ፍጥነት እንመልስልዎታለን።\n\n"
-                        f"የአደጋ ጊዜ መገናኛ: {self.business_phone}"
-                    )
-                else:
-                    reply_text = (
-                        f"Thank you for contacting {self.business_name}!\n\n"
-                        "Your message has been received. We'll get back to you soon.\n\n"
-                        f"For urgent matters, please call: {self.business_phone}"
-                    )
-                await self.send_message(chat_id, reply_text)
-                
-        except Exception as e:
-            logger.error(f"❌ Error handling message: {e}")
+            await self.send_message(self.admin_chat_id, forward_text)
+        
+        # Reply to user depending on language
+        lang = self.user_languages.get(chat_id, 'en')
+        if lang == 'am':
+            reply_text = (
+                "እናመሰግናለን! መልዕክትዎ ተቀብሏል። በተቻለ ፍጥነት እንመልስልዎታለን።\n\n"
+                f"የአደጋ ጊዜ መገናኛ: {self.business_phone}"
+            )
+        else:
+            reply_text = (
+                f"Thank you for contacting {self.business_name}!\n\n"
+                "Your message has been received. We'll get back to you soon.\n\n"
+                f"For urgent matters, please call: {self.business_phone}"
+            )
+        await self.send_message(chat_id, reply_text)
     
+    async def handle_admin_reply(self, text):
+        """Handle admin reply command"""
+        try:
+            parts = text.split(' ', 2)
+            if len(parts) >= 3:
+                target_chat_id = parts[1]
+                reply_message = parts[2]
+                
+                await self.send_message(target_chat_id, f"📩 <b>Reply from {self.business_name}:</b>\n\n{reply_message}")
+                await self.send_message(self.admin_chat_id, f"✅ Reply sent to {target_chat_id}")
+            else:
+                await self.send_message(self.admin_chat_id, "❌ Usage: /reply CHAT_ID your_message")
+        except Exception as e:
+            logger.error(f"❌ Error handling admin reply: {e}")
+            await self.send_message(self.admin_chat_id, f"❌ Error sending reply: {e}")
+                
     async def show_main_menu(self, chat_id):
         """Show main menu based on user's language"""
         lang = self.user_languages.get(chat_id, 'en')
@@ -229,16 +283,16 @@ Reply with: /reply {chat_id} your_message"""
             # English handlers
             '🏪 View Services': self.show_services,
             '🛒 Place Order': self.show_order_info,
-            '📅 Schedule Consultation': self.show_schedule_consultation,
-            '💬 Contact Us': self.show_contact,
-            '📢 Updates Channel': self.show_updates_channel,
+            '📅 Schedule Consultation': self.show_schedule_info,
+            '💬 Contact Us': self.show_contact_info,
+            '📢 Updates Channel': self.show_channel_info,
             '❓ Help & Info': self.show_help,
             # Amharic handlers
             '🏪 አገልግሎቶች': self.show_services,
             '🛒 ትዕዛዝ ይስጡ': self.show_order_info,
-            '📅 ቀጠሮ ይያዙ': self.show_schedule_consultation,
-            '💬 ያነጋግሩን': self.show_contact,
-            '📢 መረጃ ቻናል': self.show_updates_channel,
+            '📅 ቀጠሮ ይያዙ': self.show_schedule_info,
+            '💬 ያነጋግሩን': self.show_contact_info,
+            '📢 መረጃ ቻናል': self.show_channel_info,
             '❓ እርዳታ': self.show_help
         }
         
@@ -353,7 +407,7 @@ Or just send us a message here!
         
         await self.send_message(chat_id, order_text)
     
-    async def show_schedule_consultation(self, chat_id, lang='en'):
+    async def show_schedule_info(self, chat_id, lang='en'):
         """Show schedule consultation information"""
         if lang == 'am':
             schedule_text = f"""
@@ -384,7 +438,7 @@ Please provide:
         
         await self.send_message(chat_id, schedule_text)
     
-    async def show_contact(self, chat_id, lang='en'):
+    async def show_contact_info(self, chat_id, lang='en'):
         """Show contact information"""
         if lang == 'am':
             contact_text = f"""
@@ -409,7 +463,7 @@ Please provide:
         
         await self.send_message(chat_id, contact_text)
     
-    async def show_updates_channel(self, chat_id, lang='en'):
+    async def show_channel_info(self, chat_id, lang='en'):
         """Show updates channel information"""
         if lang == 'am':
             channel_text = f"""
@@ -488,6 +542,9 @@ Stay tuned for:
         self.running = True
         offset = 0
         
+        # Clear webhook first to avoid conflicts
+        await self.clear_webhook()
+        
         while self.running:
             try:
                 updates = await self.get_updates(offset)
@@ -499,7 +556,7 @@ Stay tuned for:
                         await self.handle_message(update['message'])
                 
                 # Small delay to prevent overwhelming the API
-                await asyncio.sleep(1)
+                await asyncio.sleep(0.5)
                 
             except Exception as e:
                 logger.error(f"❌ Bot polling error: {e}")
@@ -530,7 +587,9 @@ def start_health_server():
     port = int(os.environ.get('PORT', 5000))
     logger.info(f"✅ Health server starting on port {port}")
     
-    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
+    # Use simple server without debug
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=port)
 
 def run_bot_async():
     """Run bot in async event loop"""
@@ -541,6 +600,7 @@ def run_bot_async():
         loop.run_until_complete(bot.run_bot())
     except Exception as e:
         logger.error(f"❌ Async bot error: {e}")
+        logger.error(traceback.format_exc())
 
 def main():
     """Main function for enhanced bot deployment"""
@@ -563,6 +623,9 @@ def main():
         logger.info("🤖 Starting bot thread...")
         bot_thread = threading.Thread(target=run_bot_async, daemon=True)
         bot_thread.start()
+        
+        # Give bot time to start
+        time.sleep(2)
         
         # Start health server in main thread (required by Render)
         start_health_server()
