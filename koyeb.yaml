@@ -1,0 +1,18 @@
+services:
+  - name: printing-bot
+    git:
+      branch: main
+      build_command: pip install -r requirements-bot.txt
+      run_command: python start_bot.py
+    instance:
+      type: free
+    env:
+      - key: PORT
+        value: "8080"
+    health_check:
+      http:
+        port: 8080
+        path: "/health"
+    ports:
+      - port: 8080
+        protocol: http

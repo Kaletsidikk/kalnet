@@ -1,1 +1,1 @@
-web: python render_deploy.py
+web: python render_deploy_fixed.py

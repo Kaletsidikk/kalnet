@@ -36,6 +36,11 @@ def root():
     """Root endpoint"""
     return {'message': 'Printing Business Bot is running', 'status': 'active'}, 200
 
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    """Webhook endpoint for Render (keeps service alive)"""
+    return {'status': 'webhook received'}, 200
+
 def run_flask():
     """Run Flask app in a separate thread"""
     port = int(os.environ.get('PORT', 8080))
